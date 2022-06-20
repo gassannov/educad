@@ -1,4 +1,4 @@
-#include "Entity.hpp"
+#include "../include/Entity.h"
 
 PlaneByThreePoints::PlaneByThreePoints(PTR<Point> p1, PTR<Point> p2, PTR<Point> p3) { // Не доделал
     first = p1;

@@ -1,5 +1,6 @@
-#include "Entity.hpp"
+#include "../include/Entity.h"
 #include "Angem.hpp"
+#include "math.h"
 
 double Point::getDistance(PTR<Point> point) {
     double squaredLength = (this->x - point->x)*(this->x - point->x) + (this->y - point->y)*(this->y - point->y) + (this->z - point->z)*(this->z - point->z);

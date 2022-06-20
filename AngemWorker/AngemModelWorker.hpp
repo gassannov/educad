@@ -2,7 +2,7 @@
 #define ANGEM_MODEL_WORKER_H
 
 #include "Angem.hpp"
-#include "Entity.hpp"
+#include "Entity.h"
 #include "render.h"
 
 class AngemModelWorker {

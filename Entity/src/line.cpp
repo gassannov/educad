@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "Entity.hpp"
+#include "../include/Entity.h"
 #include "Angem.hpp"
 
 LineByParametres::LineByParametres(double i, double j, double k, double x0, double y0, double z0) {

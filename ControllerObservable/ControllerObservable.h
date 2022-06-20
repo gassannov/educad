@@ -4,7 +4,7 @@
 
 #ifndef EDUCAD_CONTROLLEROBSERVABLE_H
 #define EDUCAD_CONTROLLEROBSERVABLE_H
-#include "Entity.hpp"
+#include "Entity.h"
 
 class ControllerObservable{
 public:

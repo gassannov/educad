@@ -1,7 +1,7 @@
 //
 // Created by Марат Гасанов on 26.05.2022.
 //
-#include "Entity.hpp"
+#include "../include/Entity.h"
 
 void TwoDPlane::render() {
     if (point1 && point2){

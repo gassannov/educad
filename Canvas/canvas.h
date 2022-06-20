@@ -25,7 +25,7 @@
 #include "QMenu"
 #include "QApplication"
 #include "utils.h"
-#include "Entity.hpp"
+#include "Entity.h"
 #include <memory>
 #include <tuple>
 
