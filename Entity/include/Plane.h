@@ -25,7 +25,7 @@ public:
     PTR<Point> third;
     std::string planeType() const {return "planeByThreePoints";};
     PlaneByThreePoints(PTR<Point> p1, PTR<Point> p2, PTR<Point> p3);
-    void update(){};
+    void update();
     PTR<TwoDEntity> getProjection(PTR<ProjectionPlane> projectionPlane);
     std::vector<PTR<Entity> > getParents() const;
 };
@@ -36,7 +36,7 @@ public:
     PTR<Line> line;
     std::string planeType() const {return "planeByPointAndLine";};
     PlaneByPointAndLine(PTR<Point> p, PTR<Line> l);
-    void update(){};
+    void update();
     PTR<TwoDEntity> getProjection(PTR<ProjectionPlane> projectionPlane);
     std::vector<PTR<Entity> > getParents() const;
 };
@@ -46,7 +46,7 @@ public:
     PTR<Line> first;
     PTR<Line> second;
     std::string planeType() const {return "planeByIntersectinLines";};
-    void update(){};
+    void update();
     PlaneByIntersectingLines(PTR<Line> l, PTR<Line> l1);
     PTR<TwoDEntity> getProjection(PTR<ProjectionPlane> projectionPlane);
     std::vector<PTR<Entity> > getParents() const;
@@ -58,7 +58,7 @@ public:
     PTR<Line> second;
     std::string planeType() const {return "planeByParallelLines";};
     PlaneByParallelLines(PTR<Line> l, PTR<Line> l1);
-    void update(){};
+    void update();
     PTR<TwoDEntity> getProjection(PTR<ProjectionPlane> projectionPlane);
     std::vector<PTR<Entity> > getParents() const;
 };

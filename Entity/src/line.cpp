@@ -2,6 +2,8 @@
 
 #include "../include/Entity.h"
 #include "Angem.hpp"
+#include "include/Line.h"
+
 
 LineByParametres::LineByParametres(double i, double j, double k, double x0, double y0, double z0) {
     this->i = i;
@@ -23,8 +25,8 @@ LineByTwoPoints::LineByTwoPoints(PTR<Point> first, PTR<Point> second){
     this->x0 = second->x;
     this->y0 = second->y;
     this->z0 = second->z;
-//    first->addChildren(PTR<Entity>(this));
-//    second->addChildren(PTR<Entity>(this));
+    first->addChildren(PTR<Entity>(this));
+    second->addChildren(PTR<Entity>(this));
 }
 
 LineByParallel::LineByParallel(const PTR<Point>& first, const PTR<Line>& second){
@@ -131,4 +133,49 @@ LineByPerpendicular::LineByPerpendicular(){
     j = 1;
     k = 1;
 }
+
+void LineByTwoPoints::update() {
+    LineByTwoPoints newLine = LineByTwoPoints(point1, point2);
+    i = newLine.i;
+    j = newLine.j;
+    k = newLine.k;
+
+    x0 = newLine.x0;
+    y0 = newLine.y0;
+    z0 = newLine.z0;
+}
+
+void LineByParallel::update() {
+    LineByParallel newLine = LineByParallel(point, line);
+    i = newLine.i;
+    j = newLine.j;
+    k = newLine.k;
+
+    x0 = newLine.x0;
+    y0 = newLine.y0;
+    z0 = newLine.z0;
+}
+
+void LineByPerpendicular::update() {
+    LineByPerpendicular newLine = LineByPerpendicular(point, line);
+    i = newLine.i;
+    j = newLine.j;
+    k = newLine.k;
+
+    x0 = newLine.x0;
+    y0 = newLine.y0;
+    z0 = newLine.z0;
+}
+
+void LineByPlanesIntersection::update() {
+    LineByPlanesIntersection newLine = LineByPlanesIntersection(first, second);
+    i = newLine.i;
+    j = newLine.j;
+    k = newLine.k;
+
+    x0 = newLine.x0;
+    y0 = newLine.y0;
+    z0 = newLine.z0;
+}
+
 

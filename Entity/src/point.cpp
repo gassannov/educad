@@ -1,6 +1,8 @@
 #include "../include/Entity.h"
 #include "Angem.hpp"
 #include "math.h"
+#include "include/Point.h"
+
 
 double Point::getDistance(PTR<Point> point) {
     double squaredLength = (this->x - point->x)*(this->x - point->x) + (this->y - point->y)*(this->y - point->y) + (this->z - point->z)*(this->z - point->z);
@@ -64,4 +66,18 @@ PointOnPlane::PointOnPlane(PTR<Plane> plane, double* x, double* y, double* z){
     this->plane = plane;
 }
 
+void PointOnLine::update() {
+    //хуй знает, пока
+}
+
+void PointOnPlane::update() {
+    //хуй знает пока
+}
+
+void PointByLinesIntersection::update() {
+    PointByLinesIntersection newPoint = PointByLinesIntersection(first, second);
+    x = newPoint.x;
+    y = newPoint.y;
+    z = newPoint.z;
+}
 

@@ -25,7 +25,7 @@ private:
     PTR<Point> first;
     PTR<Point> second;
 public:
-    void update() {};
+    void update() ;
     LineByTwoPoints();
     LineByTwoPoints(PTR<Point> first, PTR<Point> second);
     std::vector<PTR<Entity> > getParents() const;
@@ -37,7 +37,7 @@ private:
     PTR<Line> line;
     void setPoints(AngemPoint point1, AngemPoint point2);
 public:
-    void update() {};
+    void update() ;
     LineByParallel();
     std::vector<PTR<Entity> > getParents() const;
     LineByParallel(const PTR<Point>& first, const PTR<Line>& second);
@@ -48,7 +48,7 @@ private:
     PTR<Point> point;
     PTR<Line> line;
 public:
-    void update() {};
+    void update() ;
     LineByPerpendicular();
     std::vector<PTR<Entity> > getParents() const;
     LineByPerpendicular(const PTR<Point>& point, const PTR<Line>& line);
@@ -59,7 +59,7 @@ private:
     PTR<Plane> first;
     PTR<Plane> second;
 public:
-    void update() {};
+    void update() ;
     LineByPlanesIntersection();
     LineByPlanesIntersection(PTR<Plane> first, PTR<Plane> second);
     std::vector<PTR<Entity> > getParents() const;
@@ -68,7 +68,7 @@ public:
 class LineByParametres: public Line{
 public:
     LineByParametres(double i, double j, double k, double x0, double y0, double z0);
-    void update() {};
+    void update(){};
     std::vector<PTR<Entity> > getParents() const;
 };
 

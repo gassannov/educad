@@ -1,7 +1,7 @@
 //
 // Created by Марат Гасанов on 27.05.2022.
 //
-#include "Entity.hpp"
+#include "Entity.h"
 #include "gtest/gtest.h"
 
 PTR<ProjectionPlane> oxy(new ProjectionPlane(0,0,1,0));

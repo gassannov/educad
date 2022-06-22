@@ -1,4 +1,6 @@
 #include "../include/Entity.h"
+#include "include/Plane.h"
+
 
 PlaneByThreePoints::PlaneByThreePoints(PTR<Point> p1, PTR<Point> p2, PTR<Point> p3) { // Не доделал
     first = p1;
@@ -122,6 +124,35 @@ ProjectionPlane::ProjectionPlane(double A, double B, double C, double D) {
     absciss = abscis;
 }
 
+void PlaneByThreePoints::update() {
+    PlaneByThreePoints newPlane = PlaneByThreePoints(first, second, third);
+    A = newPlane.A;
+    B = newPlane.B;
+    C = newPlane.C;
+    D = newPlane.D;
+}
 
+void PlaneByPointAndLine::update() {
+    PlaneByPointAndLine newPlane = PlaneByPointAndLine(point, line);
+    A = newPlane.A;
+    B = newPlane.B;
+    C = newPlane.C;
+    D = newPlane.D;
+}
 
+void PlaneByIntersectingLines::update() {
+    PlaneByIntersectingLines newPlane = PlaneByIntersectingLines(first, second);
+    A = newPlane.A;
+    B = newPlane.B;
+    C = newPlane.C;
+    D = newPlane.D;
+}
+
+void PlaneByParallelLines::update() {
+    PlaneByParallelLines newPlane = PlaneByParallelLines(first, second);
+    A = newPlane.A;
+    B = newPlane.B;
+    C = newPlane.C;
+    D = newPlane.D;
+}
 

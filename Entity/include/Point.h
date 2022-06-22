@@ -19,14 +19,14 @@ public:
 
 class PointByCoords : public Point {
 public:
-    void update() override {};
+    void update() {};
     PointByCoords(double x, double y, double z);
     std::vector<PTR<Entity> > getParents() const {return {};} ;
 };
 
 class PointOnLine : public Point{
 public:
-    void update() override {};
+    void update() ;
     PointOnLine(PTR<Line> line, double* x, double* y, double* z);
     std::vector<PTR<Entity> > getParents() const;
     PTR<Line> line;
@@ -37,7 +37,7 @@ public:
     PointOnPlane(PTR<Plane> plane, double* x, double* y, double* z);
     std::vector<PTR<Entity> > getParents() const;
     PTR<Plane> plane;
-    void update() {};
+    void update() ;
 };
 
 class PointByLinesIntersection : public Point {
@@ -45,7 +45,7 @@ private:
     PTR<Line> first;
     PTR<Line> second;
 public:
-    void update() {};
+    void update() ;
     PointByLinesIntersection(const PTR<Line>& first, const PTR<Line>& second);
     std::vector<PTR<Entity> > getParents() const;
 };
