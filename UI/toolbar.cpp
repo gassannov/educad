@@ -105,6 +105,9 @@ void ToolBar::newProjectButtonHandler() {};
 void ToolBar::saveProjectButtonHandler() {};
 void ToolBar::openProjectButtonHander () {};
 void ToolBar::createPointButtonHandler () {
+    QPalette palette;
+    //palette.setColor(Qt::blue);
+    createPointButton->setPalette(palette);
     pointMethod->showPopup(createPointButton->x()+createPointButton->width(), createPointButton->height()+ QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight));
    printf ("\ncondition is set to %d\n", canvas->condition);
 };

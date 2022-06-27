@@ -309,9 +309,18 @@ void Canvas::mouseReleaseEvent(QMouseEvent *e) {
     } else if (e->button() == Qt::LeftButton) {
         if (!help.isEmpty()) {
             selectedObjects[0]->pos=help[0].pos;
-            for (auto i: selectedObjects[0]->projections) {
-                i->pos.setX(help[0].pos.x());
+            auto point = dynamic_pointer_cast<Point>(selectedObjects[0]->objectEntity->projectedEntity);
+            point->x=help[0].pos.x()+canvasBegin.x();
+            if (selectedObjects[0]->planeNumber==1) {
+                point->y=help[0].pos.y()+canvasBegin.y();
+            } else {
+                point->z=help[0].pos.y()-canvasBegin.y();
             }
+            selectedObjects[0]->objectEntity->projectedEntity=point;
+            controllerObservable->onChangeEntity(point);
+//            for (auto i: selectedObjects[0]->projections) {
+//                i->pos.setX(help[0].pos.x());
+//            }
             help.clear();
         }
     }

@@ -22,8 +22,8 @@ void TwoDPoint::render() {
 }
 
 void TwoDPoint::deleteFromRender() {
-    //гоша сделает
-//renderable->addPoint()
+    renderable->deletePoint(this->X, this->Y, 0, 0, 1, "uzbek");
+    renderable->deletePoint(this->X, this->Y, 0, 0, 2, "uzbek");
 }
 
 PTR<Entity> TwoDPoint::entityByTwoDEntity(PTR<TwoDEntity> secondProjection) {
