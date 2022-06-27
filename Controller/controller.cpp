@@ -219,5 +219,7 @@ bool Controller::onAddStraightLine(PTR<Entity> line, PTR<Entity> point, int proj
 void Controller::onChangeEntity(PTR<Entity> entity) {
     disRenderIterative(entity);
     updateIterative(entity);
+    entity->addProjectionPlane(oxy);
+    entity->addProjectionPlane(oxz);
     renderIterative(entity);
 }
