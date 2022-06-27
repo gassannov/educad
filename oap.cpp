@@ -3,28 +3,17 @@
 //
 #include "iostream"
 
-class A;
-class B;
-class C{
-    A* a;
-    void foo(){
-        a->out();
-    }
-};
-
 class A{
-    int a;
-    C* c;
-public:
-    void out(){
-        std::cout << "SOME\n";
-    }
+
 };
 
-class B:A{
-    int b;
+class B{
+
 };
 
 int main(){
-
+    std::shared_ptr<int> l(new int(4));
+    std::shared_ptr<int> b = l;
+    std::shared_ptr<int> c = b;
+    std::shared_ptr<int> d = c;
 }
