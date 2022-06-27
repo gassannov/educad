@@ -1,5 +1,8 @@
-#include "Entity.hpp"
+#include "../include/Entity.h"
 #include "Angem.hpp"
+#include "math.h"
+#include "include/Point.h"
+
 
 double Point::getDistance(PTR<Point> point) {
     double squaredLength = (this->x - point->x)*(this->x - point->x) + (this->y - point->y)*(this->y - point->y) + (this->z - point->z)*(this->z - point->z);
@@ -33,6 +36,8 @@ PointByLinesIntersection::PointByLinesIntersection(const PTR<Line>& first, const
     x = p.x;
     y = p.y;
     z = p.z;
+    first->addChildren(PTR<Entity>(this));
+    second->addChildren(PTR<Entity>(this));
 }
 
 PointOnLine::PointOnLine(PTR<Line> l1, double* x, double* y, double* z){
@@ -41,6 +46,7 @@ PointOnLine::PointOnLine(PTR<Line> l1, double* x, double* y, double* z){
     this->y = p.y;
     this->z = p.z;
     line = l1;
+    l1->addChildren(PTR<Entity>(this));
 }
 
 std::vector<PTR<Entity> > PointByLinesIntersection::getParents() const{
@@ -61,6 +67,21 @@ PointOnPlane::PointOnPlane(PTR<Plane> plane, double* x, double* y, double* z){
     this->y = p.y;
     this->z = p.z;
     this->plane = plane;
+    plane->addChildren(PTR<Entity>(this));
 }
 
+void PointOnLine::update() {
+    //хуй знает, пока
+}
+
+void PointOnPlane::update() {
+    //хуй знает пока
+}
+
+void PointByLinesIntersection::update() {
+    PointByLinesIntersection newPoint = PointByLinesIntersection(first, second);
+    x = newPoint.x;
+    y = newPoint.y;
+    z = newPoint.z;
+}
 

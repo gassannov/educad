@@ -1,7 +1,7 @@
 //
 // Created by Марат Гасанов on 15.05.2022.
 //
-#include "Entity.hpp"
+#include "../include/Entity.h"
 
 PTR<TwoDEntity> Point::getProjection(PTR<ProjectionPlane> projectionPlane) {
     double pointX, pointY;

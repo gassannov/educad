@@ -7,73 +7,115 @@
 #include "controller.h"
 #include "../ControllerObservable/ControllerObservable.h"
 #include "vector"
+#include "Algo.h"
 
 PTR<ProjectionPlane> oxy(new ProjectionPlane(0, 0, 1, 0));
 PTR<ProjectionPlane> oxz(new ProjectionPlane(1, 0, 0, 0));
 
-class GUI:public GUIObserver{
+// Mock Classes
+class mockGUI:public GUIObserver{
 public:
-    std::shared_ptr<TwoDEntity> some;
-    void onAddToProjectionPlane(std::shared_ptr<TwoDEntity> object)  {
+    PTR<Renderable> renderable;
+    void onAddToProjectionPlane(std::shared_ptr<TwoDEntity> object) override {
+        object->setRenderable(renderable);
         object->render();
     }
 
-    void onChangeFromProjectionPlane(std::shared_ptr<TwoDEntity> object) {
-        std::cout << "Changed from plane (A = " << object->projectionPlane->getA() << ", B = " << object->projectionPlane->getB() << ", C = " << object->projectionPlane->getC() << ", D = " << object->projectionPlane->getD()  << ")"<< std::endl;
-        object->render();
-        std::cout << "-----------" << std::endl;
+    void onChangeFromProjectionPlane(std::shared_ptr<TwoDEntity> object) override {
+        //
     }
 
-    void onDeleteFromProjectionPlane(std::shared_ptr<TwoDEntity> object)  {
-        std::cout << "Deleted from plane (A = " << object->projectionPlane->getA() << ", B = " << object->projectionPlane->getB() << ", C = " << object->projectionPlane->getC() << ", D = " << object->projectionPlane->getD()  << ")"<< std::endl;
-        std::cout << "Object deleted" << std::endl;
-        object->render();
-        std::cout << "-----------" << std::endl;
+    void onDeleteFromProjectionPlane(std::shared_ptr<TwoDEntity> object) override {
+        object->setRenderable(renderable);
+        object->deleteFromRender();
+    }
+
+    void onAddAlgorithm(std::vector<std::pair<std::string, std::vector<PTR<TwoDEntity>>>> algorithm) override {
+        //
     }
 };
 
-class UI : public Renderable{
+class mockUI : public Renderable{
     ControllerObservable* controller;
-    std::vector<PTR<TwoDEntity>> allProjected;
 public:
-    std::vector<PTR<TwoDEntity>> objectOnScreens;
-    void clickMouse(int x, int y, PTR<ProjectionPlane> projectionPlane){
-        PTR<TwoDEntity> point(new TwoDPoint(x, y, projectionPlane));
-        allProjected.push_back(point);
-    }
-
-    void addProjection(int xCurr, int yCurr, int xProj, int yProj, PTR<ProjectionPlane>currProjectionPlane, PTR<ProjectionPlane> projProjectionPlane){
-        for (int i = 0; i < allProjected.size(); ++i) {
-//            if (allProjected[i]->)
-        }
-    }
-    void doubleClickMouse(){
-        PTR<Point> p1(new PointByCoords(1,1,1));
-        PTR<Point> p2(new PointByCoords(2,2,2));
-        controller->onAddEntity(PTR<Line>(new LineByTwoPoints(p1, p2)));
-    }
-public:
-    UI(ControllerObservable* co){
+    std::vector<PTR<Entity>> allProjected;
+    mockUI(ControllerObservable* co){
         controller = co;
     }
 
-private:
-    void addPoint(int x, int y, int xBegin, int yBegin, int planeNumber, std::string name) override {
+    void clickMouse(int x, int y){
+        PTR<Entity> point(new PointByCoords(x, y, 1));
+        allProjected.push_back(point);
+    }
+
+    void addLineByTwoPoints(int index1, int index2){
+        controller->onCreateLineByTwoPoint(allProjected[index1], allProjected[index2]);
+    }
+
+    void deleteEntity(int index){
+        controller->onDeleteEntity(allProjected[index]);
+    }
+
+    void addPoint(int x, int y, int xBegin, int yBegin, int planeNumber, std::string name, TwoDPoint *twoDEntity) override {
+        std::cout << "Add point with : " << std::endl;
+        std::cout << "X: " << x << "; Y:" << y << std::endl;
     }
 
     void addLine(int x1, int y1, int x2, int y2, int xBegin, int yBegin, int planeNumber, std::string name) override {
+        std::cout << "Add line with : " << std::endl;
+        std::cout << "Point 1: ";
+        std::cout << "X: " << x1 << "; Y:" << x1 << std::endl;
+        std::cout << "Point 2: ";
+        std::cout << "X: " << x2 << "; Y:" << y2 << std::endl;
     }
 
-    void addPlane(){
+    void deletePoint(int x, int y, int xBegin, int yBegin, int planeNumber, std::string name) override {
+        std::cout << "Deleting point with : " << std::endl;
+        std::cout << "X: " << x << "; Y:" << y << std::endl;
+    }
+
+    void
+    deleteLine(int x1, int y1, int x2, int y2, int xBegin, int yBegin, int planeNumber, std::string name) override {
+        std::cout << "Deleting line with : " << std::endl;
+        std::cout << "Point 1: ";
+        std::cout << "X: " << x1 << "; Y:" << x1 << std::endl;
+        std::cout << "Point 2: ";
+        std::cout << "X: " << x2 << "; Y:" << y2 << std::endl;
+    }
+
+    void addPlaneByLineAndPoint(int x, int y, int x1, int y1, int x2, int y2, int xBegin, int yBegin, int planeNumber,
+                                std::string name, TwoDEntity *twoDEntity) override {
+        //
+    }
+
+    void addLinkLine(PTR<TwoDEntity> entity1, PTR<TwoDEntity> entity2) override {
+        //
     }
 };
 
 TEST(basic, Test){
-    PTR<GUIObserver> observer(new GUI());
-    Render* render = new Render(observer);
-    ControllerObservable* controller = new Controller(render);
-    UI ui = UI(controller);
-    ui.clickMouse(1, 1, oxy);
-    ui.clickMouse(1, 1, oxz);
+    AlgoInterface* algo = new Algo;
+    PTR<mockGUI> gui = MAKEPTR<mockGUI>();
+    Render* render = new Render(gui);
+    ControllerObservable* controller = new Controller(render, algo);
+    PTR<mockUI> ui = MAKEPTR<mockUI>(controller);
+    gui->renderable = ui;
+    ui->clickMouse(12, 7);
+    ui->clickMouse(11, 8);
+    ui->addLineByTwoPoints(0, 1);
+    EXPECT_NO_THROW();
+}
+
+TEST(changeEntity, TestIterativeDeleting){
+    AlgoInterface* algo = new Algo;
+    PTR<mockGUI> gui = MAKEPTR<mockGUI>();
+    Render* render = new Render(gui);
+    ControllerObservable* controller = new Controller(render, algo);
+    PTR<mockUI> ui = MAKEPTR<mockUI>(controller);
+    gui->renderable = ui;
+    ui->clickMouse(12, 7);
+    ui->clickMouse(11, 8);
+    ui->addLineByTwoPoints(0, 1);
+    ui->deleteEntity(0);
     EXPECT_NO_THROW();
 }

@@ -4,7 +4,7 @@
 
 #ifndef EDUCAD_ALGOINTERFACE_H
 #define EDUCAD_ALGOINTERFACE_H
-#include "Entity.hpp"
+#include "Entity.h"
 #include "render.h"
 #include "vector"
 #include "string"

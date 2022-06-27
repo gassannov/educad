@@ -3,7 +3,7 @@
 //
 #ifndef RENDER_GUIOBSERVER_H
 #define RENDER_GUIOBSERVER_H
-#include "Entity.hpp"
+#include "Entity.h"
 #include "Renderable.h"
 #include "vector"
 #include "string"

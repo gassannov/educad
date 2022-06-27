@@ -3,7 +3,7 @@
 //
 
 #include "iostream"
-#include "Entity.hpp"
+#include "../include/Entity.h"
 
 TwoDPoint::TwoDPoint(double x, double y, PTR<ProjectionPlane> plane) {
     this->projectionPlane = plane;

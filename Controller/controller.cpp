@@ -11,9 +11,11 @@ void Controller::addToModel(PTR<Entity> entity) {
 //    lineWorker->AddToModel(entity);
 }
 
-
-void Controller::renderEntity(PTR<Entity> entity) {
-    render->addEntity(entity);
+void Controller::onCreatePointByCoords(double x, double y, double z) {
+    PTR<PointByCoords> pointByCoords = MAKEPTR<PointByCoords>(x, y, z);
+    pointByCoords->addProjectionPlane(oxy);
+    pointByCoords->addProjectionPlane(oxz);
+    renderEntity(pointByCoords);
 }
 
 PTR<Entity> Controller::onAddEntity(PTR<Entity> entity) {
@@ -21,16 +23,39 @@ PTR<Entity> Controller::onAddEntity(PTR<Entity> entity) {
     entity->addProjectionPlane(oxz);
     addToModel(entity);
     return entity;
-    //renderEntity(entity);
 }
 
 void Controller::onDeleteEntity(PTR<Entity> entity) {
-//    lineWorker->DeleteEntity(entity);
-    disRenderEntity(entity);
+    disRenderIterative(entity);
+}
+
+void Controller::renderEntity(PTR<Entity> entity) {
+    render->addEntity(entity);
+}
+
+void Controller::renderIterative(PTR<Entity> entity) {
+    renderEntity(entity);
+    for (auto child: entity->childrends) {
+        renderIterative(child);
+    }
 }
 
 void Controller::disRenderEntity(PTR<Entity> entity) {
     render->deleteEntity(entity);
+}
+
+void Controller::disRenderIterative(PTR<Entity> entity) {
+    disRenderEntity(entity);
+    for (auto child: entity->childrends) {
+        disRenderIterative(child);
+    }
+}
+
+void Controller::updateIterative(PTR<Entity> entity) {
+    for (auto child: entity->childrends) {
+        child->update();
+        updateIterative(child);
+    }
 }
 
 bool Controller::onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line) {
@@ -189,4 +214,10 @@ bool Controller::onAddStraightLine(PTR<Entity> line, PTR<Entity> point, int proj
         return true;
     }
     return false;
+}
+
+void Controller::onChangeEntity(PTR<Entity> entity) {
+    disRenderIterative(entity);
+    updateIterative(entity);
+    renderIterative(entity);
 }

@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(educad)
 
-add_executable(${PROJECT_NAME} main.cpp)
 add_executable(oap oap.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 
 #set(GCC_COVERAGE_LINK_FLAGS "-lgcov")
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Angem.hpp"
-#include "Entity.hpp"
+#include "Entity.h"
 
 
 TEST(AngemUtils, getPerpendicularToLines)

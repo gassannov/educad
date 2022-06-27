@@ -2,7 +2,7 @@
 // Created by Марат Гасанов on 15.04.2022.
 //
 #include "iostream"
-#include "Entity.hpp"
+#include "../include/Entity.h"
 
 void TwoDLine::render() {
     int direction;

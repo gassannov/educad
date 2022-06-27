@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.0.0)
 project(Entity)
 set(THIS_LIB_NAME Entity)
 
-file(GLOB SOURCES *.cpp)
-file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
+file(GLOB SOURCES src/*.cpp)
+file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(${THIS_LIB_NAME}  STATIC ${SOURCES})
 

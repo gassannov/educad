@@ -2,7 +2,7 @@
 #define RENDER_LIBRARY_H
 #include "set"
 #include "GUIObserver.h"
-#include "Entity.hpp"
+#include "Entity.h"
 
 class Render{
 private:

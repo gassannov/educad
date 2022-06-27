@@ -4,12 +4,14 @@
 
 #ifndef EDUCAD_CONTROLLEROBSERVABLE_H
 #define EDUCAD_CONTROLLEROBSERVABLE_H
-#include "Entity.hpp"
+#include "Entity.h"
 
 class ControllerObservable{
 public:
+    virtual void onCreatePointByCoords(double x, double y, double z) = 0;
     virtual PTR<Entity> onAddEntity(PTR<Entity> entity) = 0;
     virtual void onDeleteEntity(PTR<Entity> entity) = 0;
+    virtual void onChangeEntity(PTR<Entity> entity) = 0;
     virtual bool onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line) = 0;
     virtual bool onCreateParallelLine(PTR<Entity> line, PTR<Entity> point) = 0;
     virtual bool onCreateLineByTwoPoint(PTR<Entity> point1, PTR<Entity> point2) = 0;
