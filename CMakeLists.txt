@@ -25,4 +25,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${CONTROLLER_LIBRARIES} ${UI_LIBRAR
 target_include_directories(oap PUBLIC ${CONTROLLER_INCLUDE_DIRS} ${UI_INCLUDE_DIRS} ${ALGO_INCLUDE_DIRS})
 target_link_libraries(oap PUBLIC ${CONTROLLER_LIBRARIES} ${UI_LIBRARIES} ${ALGO_LIBRARIES})
 
-add_subdirectory(test)
+#add_subdirectory(test)

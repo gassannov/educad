@@ -8,7 +8,7 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
             if (index >= 0) {
                 if (vcp[index]->isSelected) {
                     vcp[index]->qpColor=Qt::black;
-                    selectedObjects.remove(findInSelected(vcp[index]->pos.x(), vcp[index]->pos.y()));
+                 //   selectedObjects.remove(findInSelected(vcp[index]->pos.x(), vcp[index]->pos.y()));
                 } else {
                     if (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier) {
                         qp *temp = vcp[index];

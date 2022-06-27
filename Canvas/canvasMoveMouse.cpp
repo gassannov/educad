@@ -8,6 +8,16 @@ void Canvas::mouseMoveEvent(QMouseEvent *event) {
     int scrWidth = rec.width();
     int xDefault = scrWidth / 4;
     int yDefault = scrHeight * 556 / 10000 * 9 / 10 + QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight);
+    if ((selectedObjects.size()==1) && (event->buttons()==Qt::LeftButton)) {
+        qp helpMove;
+        printf ("\n draw \n");
+        helpMove.pos=this->pos;
+        helpMove.objType=POINT;
+        helpMove.qpColor=Qt::gray;
+        help.clear();
+        help.append(helpMove);
+        this->update();
+    }
     if (!blocked) {
         int index = findInVcp(this->pos.x(), this->pos.y());
         if (index >= 0) {

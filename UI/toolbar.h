@@ -6,12 +6,19 @@
 #include "QDialogButtonBox"
 #include <QWidget>
 #include <QPushButton>
+#include "QStylePainter"
 #include "QMainWindow"
 #include "canvas.h"
 #include "QObject"
 #include "QComboBox"
+#include "CoordinateInputDialog.h"
 
 class LineComboBox : public QComboBox {
+public:
+    void showPopup (int x, int y);
+};
+
+class PointComboBox : public QComboBox {
 public:
     void showPopup (int x, int y);
 };
@@ -29,6 +36,7 @@ class ToolBar : public QObject
     QPushButton* eraseButton;
     QPushButton* cursorButton;
     LineComboBox* lineMethod;
+    PointComboBox* pointMethod;
     QWidget *parentWidget;
     Canvas* canvas;
 public:
@@ -44,6 +52,7 @@ private slots:
     void createProjectionPlaneButtonHandler ();
     void resizeButtonHandler();
     void eraseButtonHandler();
+    void onPointIndexChanged(int index);
 };
 
 

@@ -4,6 +4,7 @@
 #include "iostream"
 #include "QApplication"
 #include "QScreen"
+#include "iostream"
 //#include "QDesktopWidget"
 #include "QFont"
 using namespace std;
@@ -36,6 +37,8 @@ ProjectStructureList::ProjectStructureList() {
     structureWidget->setFrameShape(QFrame::Box);
     structureWidget->setLineWidth(2);
     structureWidget->setMidLineWidth(1);
+    connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+            SLOT(onItemSelected(QTreeWidgetItem*, int)));
 }
 
 void ProjectStructureList::clear () {
@@ -146,8 +149,30 @@ int ProjectStructureList::removePointFromXZPlaneStructure(QString pointName) {
     return 0;
 }
 
+int ProjectStructureList::addPlaneToXYPlaneStructure(QString planeName) {
+    if (ifExistsOnPlane(planeXYStruct, planeName, "Plane ")==-1) {
+        QTreeWidgetItem* planePoint = new QTreeWidgetItem();
+        planePoint->setText(0,"Plane " + planeName + "\'");
+        planeXYStruct->addChild(planePoint);
+        planeXYStruct->child(planeXYStruct->childCount()-1)->setFont(0, font);
+    }
+    return 0;
+}
 
+int ProjectStructureList::addPlaneToXZPlaneStructure(QString planeName) {
+    if (ifExistsOnPlane(planeXZStruct, planeName, "Plane ")==-1) {
+        QTreeWidgetItem* planePoint = new QTreeWidgetItem();
+        planePoint->setText(0,"Plane " + planeName + "\'");
+        planeXZStruct->addChild(planePoint);
+        planeXZStruct->child(planeXZStruct->childCount()-1)->setFont(0, font);
+    }
+    return 0;
+}
 
+void ProjectStructureList::onItemSelected(QTreeWidgetItem *item, int) {
+    std::string  text = item->text(0).toStdString();
+    cout << text << endl;
+}
 
 
 

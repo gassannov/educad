@@ -56,38 +56,42 @@ private slots:
     void handleParallelLineThroughPointButton ();
     void handlePlaneThroughLineAndPointButton ();
 };
-
-class ContextEdit : public QTextEdit {
-protected:
-    QPushButton projectOnPlaneButton;
-    QPushButton drawPerpendicularButton;
-    QPushButton renameButton;
-    QPushButton getDistanceButton;
-    QPushButton resizeButton;
-    QPushButton deleteButton;
-    QPushButton cutButton;
-    QPushButton copyButton;
-public:
-    QMenu* contextEditWidget;
-    virtual void handleProjectOnPlaneButton () = 0;
-    virtual void handleDrawPerpendicularButton () = 0;
-    virtual void handleRenameButton () = 0;
-    virtual void handleGetDistanceButton () = 0;
-    virtual void handleResizeButton () = 0;
-    virtual void handleDeleteButton () = 0;
-    virtual void handeCutButton () = 0;
-    virtual void handleCopyButton () = 0;
-    virtual ~ContextEdit() {}
-};
-
-
-
-class LineContextEdit : public ContextEdit {
+//
+//class ContextEdit : public QTextEdit {
+//    Q_OBJECT
+//protected:
+//    QPushButton projectOnPlaneButton;
+//    QPushButton drawPerpendicularButton;
+//    QPushButton renameButton;
+//    QPushButton getDistanceButton;
+//    QPushButton resizeButton;
+//    QPushButton deleteButton;
+//    QPushButton cutButton;
+//    QPushButton copyButton;
+//public:
+//    QMenu* contextEditWidget;
+//    virtual ~ContextEdit() {}
+//private slots:
+//    virtual void handleProjectOnPlaneButton () = 0;
+//    virtual void handleDrawPerpendicularButton () = 0;
+//    virtual void handleRenameButton () = 0;
+//    virtual void handleGetDistanceButton () = 0;
+//    virtual void handleResizeButton () = 0;
+//    virtual void handleDeleteButton () = 0;
+//    virtual void handeCutButton () = 0;
+//    virtual void handleCopyButton () = 0;
+//};
+//
+//
+//
+class LineContextEdit : public QTextEdit {
+    Q_OBJECT
 protected:
     QPushButton realSizeButton;
     QPushButton buildIntersectionButton;
     QPushButton buildParallelLineButton;
 public:
+    QMenu* contextEditWidget;
     virtual void handleProjectOnPlaneButton () ;
     virtual void handleDrawPerpendicularButton () ;
     virtual void handleRenameButton () ;
@@ -103,18 +107,21 @@ public:
     virtual ~LineContextEdit() {}
 };
 
-class PointContextEdit : public ContextEdit {
+class PointContextEdit: public QTextEdit  {
+    Q_OBJECT
 public:
-    virtual void handleProjectOnPlaneButton () ;
-    virtual void handleDrawPerpendicularButton () ;
-    virtual void handleRenameButton () ;
-    virtual void handleGetDistanceButton ();
-    virtual void handleResizeButton () ;
-    virtual void handleDeleteButton () ;
-    virtual void handeCutButton ();
-    virtual void handleCopyButton ();
+    QMenu* contextEditWidget;
     PointContextEdit();
     virtual ~PointContextEdit () {}
+private slots:
+    void handleProjectOnPlaneButton () ;
+    void handleDrawPerpendicularButton () ;
+    void handleRenameButton () ;
+    void handleGetDistanceButton ();
+    void handleResizeButton () ;
+    void handleDeleteButton () ;
+    void handeCutButton ();
+    void handleCopyButton ();
 };
 
 #endif // CONTEXTEDIT_H

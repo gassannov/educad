@@ -86,14 +86,27 @@ ToolBar::ToolBar (QWidget *parent, Canvas* _canvas) {
     lineMethod->addItem("Прямая по 2 точкам");
     lineMethod->addItem("Прямая, перпендикулярная выбранной");
     lineMethod->addItem("Прямая, параллельная выбранной");
+    pointMethod = new PointComboBox;
+    pointMethod->addItem("Точка по координатам");
+    pointMethod->addItem("Отметить точку на чертеже");
+    pointMethod->setCurrentIndex(-1);
+    connect(pointMethod, &QComboBox::currentIndexChanged, this, &ToolBar::onPointIndexChanged);
+}
+
+void QPushButton::paintEvent(QPaintEvent *) {
+    QStylePainter p(this);
+    QStyleOptionButton option;
+    initStyleOption(&option);
+    option.state |= QStyle::State_MouseOver;
+    p.drawControl(QStyle::CE_PushButton, option);
 }
 
 void ToolBar::newProjectButtonHandler() {};
 void ToolBar::saveProjectButtonHandler() {};
 void ToolBar::openProjectButtonHander () {};
 void ToolBar::createPointButtonHandler () {
-    canvas->condition = 1;
-    printf ("\ncondition is set to %d\n", canvas->condition);
+    pointMethod->showPopup(createPointButton->x()+createPointButton->width(), createPointButton->height()+ QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight));
+   printf ("\ncondition is set to %d\n", canvas->condition);
 };
 void ToolBar::createLineButtonHandler () {
     lineMethod->showPopup(createLineButton->x()+createLineButton->width(), createLineButton->height()+ QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight));
@@ -103,17 +116,38 @@ void ToolBar::createLineButtonHandler () {
 void ToolBar::createProjectionPlaneButtonHandler () {};
 void ToolBar::resizeButtonHandler() {};
 void ToolBar::eraseButtonHandler() {
-
-    printf ("\ncondition is set to clear");
-    //canvas->clear();
-    canvas->condition=3;
+    canvas->clear();
 };
 
 void ToolBar::cursorButtonHandler() {
     canvas->condition=0;
 }
 
+void ToolBar::onPointIndexChanged(int index) {
+    printf ("\n uzbek %d uzbek\n", index);
+    if (index==0) {
+        CoordinateInputDialog coordInput;
+        coordInput.exec();
+        auto result = coordInput.getInput();
+        PTR<ProjectionPlane> plane;
+        auto name = get<3>(result);
+        auto point1Entity = new TwoDPoint(get<0>(result), get<1>(result), plane);
+        auto point2Entity = new TwoDPoint (get<0>(result), get<2>(result), plane);
+        canvas->addCompletePoint(get<0>(result), get<1>(result), get<2>(result), name, point1Entity, point2Entity);
+    } else if (index==1) {
+        canvas->condition=1;
+    }
+    pointMethod->setCurrentIndex(-1);
+}
+
 void LineComboBox::showPopup(int x, int y) {
+    qApp->setEffectEnabled(Qt::UI_AnimateCombo, false);
+    QComboBox::showPopup();
+    QWidget *popup = this->findChild<QFrame*>();
+    popup->move(x,y);
+}
+
+void PointComboBox::showPopup(int x, int y) {
     qApp->setEffectEnabled(Qt::UI_AnimateCombo, false);
     QComboBox::showPopup();
     QWidget *popup = this->findChild<QFrame*>();

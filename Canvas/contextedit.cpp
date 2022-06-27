@@ -5,7 +5,12 @@
 
 #include <QPushButton>
 
-
+void PointContextEdit::handleDeleteButton() {
+    printf ("deleting");
+    Canvas* cnv = dynamic_cast<Canvas*>(parent());
+    qp* objectToWork = cnv->getSelectedObject();
+    cnv->deleteQp(objectToWork);
+}
 
 void LineContextEdit::handleProjectOnPlaneButton() {
 
@@ -103,18 +108,18 @@ LineContextEdit::LineContextEdit() {
     contextEditWidget->addAction("Скопировать");
     contextEditWidget->addAction("Построить натуральную величину");
     contextEditWidget->addAction("Построить пересечение");
-    contextEditWidget->addAction("Построить параллельную прямую");
-    connect(&projectOnPlaneButton, SIGNAL (released()), this,SLOT (LineContextEdit::handePprojectOnPlaneButton()));
-    connect(&drawPerpendicularButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleDrawPerpendicularLine()));
-    connect(&renameButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleRenameButton()));
-    connect(&getDistanceButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleGetDistanceButton()));
-    connect(&resizeButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleResizeButton()));
-    connect(&deleteButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleDeleteButton()));
-    connect(&cutButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleCutButton()));
-    connect(&copyButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleCopyButton()));
-    connect(&deleteButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleRealSizeButton()));
-    connect(&cutButton, SIGNAL (released()), this, SLOT (LineContextEdit::handlebuildIntersectionButton()));
-    connect(&copyButton, SIGNAL (released()), this, SLOT (LineContextEdit:: handleBuildParallelLineButton()));
+//    contextEditWidget->addAction("Построить параллельную прямую");
+//    connect(&projectOnPlaneButton, SIGNAL (released()), this,SLOT (LineContextEdit::handePprojectOnPlaneButton()));
+//    connect(&drawPerpendicularButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleDrawPerpendicularLine()));
+//    connect(&renameButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleRenameButton()));
+//    connect(&getDistanceButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleGetDistanceButton()));
+//    connect(&resizeButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleResizeButton()));
+//    connect(&deleteButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleDeleteButton()));
+//    connect(&cutButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleCutButton()));
+//    connect(&copyButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleCopyButton()));
+//    connect(&deleteButton, SIGNAL (released()), this, SLOT (LineContextEdit::handleRealSizeButton()));
+//    connect(&cutButton, SIGNAL (released()), this, SLOT (LineContextEdit::handlebuildIntersectionButton()));
+//    connect(&copyButton, SIGNAL (released()), this, SLOT (LineContextEdit:: handleBuildParallelLineButton()));
 }
 
 PointContextEdit::PointContextEdit () {
@@ -124,17 +129,18 @@ PointContextEdit::PointContextEdit () {
     contextEditWidget->addAction("Переименовать");
     contextEditWidget->addAction("Посчитать дистанцию");
     contextEditWidget->addAction("Изменить размер");
-    contextEditWidget->addAction("Удалить");
+    QAction* deleteAction = new QAction(tr("хуй"), this);
+    contextEditWidget->addAction(deleteAction);
     contextEditWidget->addAction("Вырезать");
     contextEditWidget->addAction("Скопировать");
-    connect(&projectOnPlaneButton, SIGNAL (released()), this,SLOT (PointContextEdit::handePprojectOnPlaneButton()));
-    connect(&drawPerpendicularButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleDrawPerpendicularLine()));
-    connect(&renameButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleRenameButton()));
-    connect(&getDistanceButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleGetDistanceButton()));
-    connect(&resizeButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleResizeButton()));
-    connect(&deleteButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleDeleteButton()));
-    connect(&cutButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleCutButton()));
-    connect(&copyButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleCopyButton()));
+//    connect(&projectOnPlaneButton, SIGNAL (released()), this,SLOT (PointContextEdit::handePprojectOnPlaneButton()));
+//    connect(&drawPerpendicularButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleDrawPerpendicularLine()));
+//    connect(&renameButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleRenameButton()));
+//    connect(&getDistanceButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleGetDistanceButton()));
+//    connect(&resizeButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleResizeButton()));
+      connect(deleteAction, SIGNAL (triggered()), this, SLOT (handleDeleteButton()));
+//    connect(&cutButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleCutButton()));
+//    connect(&copyButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleCopyButton()));
 }
 
 TwoPointsContextEdit::TwoPointsContextEdit () {
@@ -244,10 +250,6 @@ void PointContextEdit::handleGetDistanceButton() {
 }
 
 void PointContextEdit::handleResizeButton() {
-
-}
-
-void PointContextEdit::handleDeleteButton() {
 
 }
 

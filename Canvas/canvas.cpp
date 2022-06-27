@@ -231,13 +231,14 @@ int Canvas::findInSelected(int x, int y) {
 
 Canvas::Canvas(QWidget *parent, QMainWindow *_parent, ProjectStructureList *_projectStructureList,
                ControllerObservable *controllerObservable) : QWidget(parent) {
-    LineContextEdit lineRMB;
-    PointContextEdit pointRMB;
     connectedPointRMB.setParent(this);
     unprojectedPointRMB.setParent(this);
     oneProjectionRMB.setParent(this);
     pointAndLineRMB.setParent(this);
     twoPointsRMB.setParent(this);
+    pointRMB.setParent(this);
+    pointRMB.hide();
+    lineRMB.hide();
     connectedPointRMB.hide();
     unprojectedPointRMB.hide();
     oneProjectionRMB.hide();
@@ -305,6 +306,14 @@ void Canvas::mouseReleaseEvent(QMouseEvent *e) {
         }
         //удалить последний элемент линии
         /* */
+    } else if (e->button() == Qt::LeftButton) {
+        if (!help.isEmpty()) {
+            selectedObjects[0]->pos=help[0].pos;
+            for (auto i: selectedObjects[0]->projections) {
+                i->pos.setX(help[0].pos.x());
+            }
+            help.clear();
+        }
     }
 }
 
@@ -381,4 +390,46 @@ qp *Canvas::findInVcpByPTR(PTR<TwoDEntity> entity) {
         }
     }
     return nullptr;
+}
+
+void Canvas::addCompletePoint(int x, int y, int z, std::string name,  TwoDPoint* twoDEntity1,TwoDPoint* twoDEntity2) {
+    PTR<TwoDEntity> twoDPoint1(twoDEntity1);
+    PTR<TwoDEntity> twoDPoint2 (twoDEntity2);
+    qp *qp1 = new qp;
+    qp* qp2 = new qp;
+    PTR<ProjectionPlane> plane;
+    x = canvasBegin.x() - x;
+    y = canvasBegin.y() + y;
+    z = canvasBegin.y() - z;
+    qp1->pos = QPoint(x, y); qp2->pos=QPoint(x,z);
+    qp1->objType = POINT; qp2->objType=POINT;
+    qp1->qpColor = Qt::black; qp2->qpColor = Qt::black;
+    qp1->needsProjection = false; qp2->needsProjection= false;
+    qp1->qpName = QString::fromStdString(name); qp2->qpName = QString::fromStdString(name);
+    qp1->planeNumber = 1; qp2->planeNumber = 2;
+    qp1->objectEntity=twoDPoint1; qp2->objectEntity=twoDPoint2;
+    qp1->projections.append(qp2); qp2->projections.append(qp1);
+    vcp.append(qp1); vcp.append(qp2);
+    this->update();
+}
+
+void Canvas::deleteQp(qp* obj) {
+    for (auto i:obj->projections) {
+        auto it = std::find(vcp.begin(), vcp.end(), i);
+        vcp.erase(it);
+    }
+    auto it = std::find(vcp.begin(), vcp.end(), obj);
+    vcp.erase(it);
+    selectedIndex=-1;
+    this->update();
+}
+
+void Canvas::selectByPlaneAndName(std::string name, int plane) {
+    for (int j=0; j<=vcp.size(); j++) {
+        auto i=vcp[j];
+        if ((i->planeNumber==plane) && (i->qpName.toStdString()==name)) {
+            selectedIndex=j;
+            break;
+        }
+    }
 }

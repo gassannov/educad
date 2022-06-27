@@ -4,7 +4,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <vector>
-
+#include "contextedit.h"
 
 using namespace std;
 
@@ -17,6 +17,9 @@ private:
     QTreeWidgetItem* planeXZStruct;
     vector <QTreeWidgetItem*> userPlanesStruct;
     QFont font;
+private:
+    PointContextEdit pointRMB;
+    LineContextEdit lineRMB;
 public:
     QFrame* structureWidget;
     void clear ();
@@ -24,6 +27,8 @@ public:
     int addNewPlaneToStructure();
     int addPointToXYPlaneStructure (QString pointName);
     int addPointToXZPlaneStructure (QString pointName);
+    int addPlaneToXYPlaneStructure (QString planeName);
+    int addPlaneToXZPlaneStructure (QString planeName);
     int addPointToUserPlaneStructure ();
     int addLineToXYPlaneStructure (QString lineName);
     int addLineToXZPlaneStructure (QString lineName);
@@ -35,6 +40,8 @@ public:
     int removeLineFromXZPlaneStructure (QString lineName);
     int removeLineFromUserPlaneStructure ();
     int removePlaneFromStructure ();
+private slots:
+    void onItemSelected(QTreeWidgetItem *item, int );
 };
 
 #endif // PROJECTSTRUCTURELIST_H

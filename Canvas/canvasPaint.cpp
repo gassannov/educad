@@ -71,6 +71,10 @@ void Canvas::paintEvent(QPaintEvent *event) {
             pen.setWidth(10);
             p.setPen(pen);
             p.drawEllipse(vcp[i]->pos2.x(), vcp[i]->pos2.y(), 5, 5);
+            if (vcp[i]->planeNumber == 1)
+                projectStructureList->addPlaneToXZPlaneStructure(vcp[i]->qpName);
+            if (vcp[i]->planeNumber == 2)
+                projectStructureList->addPlaneToXYPlaneStructure(vcp[i]->qpName);
         }
         for (int j = 0; j < vcp[i]->planeNumber; j++) {
             text.append('\'');
@@ -87,6 +91,14 @@ void Canvas::paintEvent(QPaintEvent *event) {
             p.setPen(pen);
             if (help[i].endpos.x() > 0)
                 p.drawLine(help[i].pos.x(), help[i].pos.y(), help[i].endpos.x(), help[i].endpos.y());
+        }
+        if (help[i].objType == POINT) {
+            pen.setWidth(10);
+            p.setPen(pen);
+            QBrush brush = p.brush();
+            brush.setStyle(Qt::SolidPattern);
+            p.setBrush(brush);
+            p.drawEllipse(help[i].pos.x(), help[i].pos.y(), 5, 5);
         }
     }
     for (int i = 0; i < xMatch.size(); ++i) {
