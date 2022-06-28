@@ -101,6 +101,18 @@ void Canvas::paintEvent(QPaintEvent *event) {
             p.drawEllipse(help[i].pos.x(), help[i].pos.y(), 5, 5);
         }
     }
+    for (int i = 0; i < buildLine.size(); ++i) {
+        pen.setColor(buildLine[i].qpColor);
+        pen.setBrush(buildLine[i].qpColor);
+        p.setPen(pen);
+        QPainterPath path;
+        if (buildLine[i].objType == LINE) {
+            pen.setWidth(3);
+            p.setPen(pen);
+            if (buildLine[i].endpos.x() > 0)
+                p.drawLine(buildLine[i].pos.x(), buildLine[i].pos.y(), buildLine[i].endpos.x(), buildLine[i].endpos.y());
+        }
+    }
     for (int i = 0; i < xMatch.size(); ++i) {
         pen.setColor(xMatch[i].qpColor);
         pen.setBrush(xMatch[i].qpColor);

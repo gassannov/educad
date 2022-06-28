@@ -94,6 +94,7 @@ void PointAndLineContextEdit::handleParallelLineThroughPointButton () {
     PTR<Entity> baseLine (new LineByTwoPoints(baseLineBegin, baseLineEnd));
     printf ("\n uzbek8=%d tadjik2=%d\n", objectsToWork[0]->objType, objectsToWork[1]->objType);
     cnv->getControllerObservable()->onCreateParallelLine(baseLine, point);
+    cnv->projectStructureList->addObjectDependency("line", objectsToWork[1]->qpName, "Параллельна прямой P");
 }
 
 LineContextEdit::LineContextEdit() {
@@ -194,6 +195,7 @@ void PointAndLineContextEdit::handlePerpendicularFromPointToLineButton() {
     PTR<Point> baseLineEnd (new PointByCoords (lineEndX, lineEndY, lineEndZ));
     PTR<Entity> baseLine (new LineByTwoPoints(baseLineBegin, baseLineEnd));
     cnv->getControllerObservable()->onCreatePerpendicular(point, baseLine);
+    cnv->projectStructureList->addObjectDependency("line", objectsToWork[1]->qpName, "Перпендикулярна прямой P");
 }
 
 void PointAndLineContextEdit::handlePlaneThroughLineAndPointButton() {
@@ -263,6 +265,20 @@ void PointContextEdit::handleCopyButton () {
 
 void DontProjectObjectContextEdit::handleDontProjectButon() {
     Canvas* cnv = dynamic_cast<Canvas*>(parent());
+    qp* qp1 = cnv->getVcp().back();
+    cnv->projectStructureList->addObjectToStructure(qp1->qpName, "Точка");
+    int sx = cnv->canvasBegin.x()-qp1->pos.x();
+    int sy;
+    int sz;
+    if (qp1->planeNumber == 1) {
+        sy =abs(cnv-> canvasBegin.y() - qp1->pos.y());
+        sz = -1;
+    }
+    else {
+        sy = -1;
+        sz = abs(qp1->pos.y() - cnv->canvasBegin.y());
+    }
+    cnv->projectStructureList->addPointCoords(qp1->qpName,sx, sy,sz);
     cnv->unlock();
 }
 

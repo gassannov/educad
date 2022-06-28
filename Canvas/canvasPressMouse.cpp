@@ -3,12 +3,12 @@
 void Canvas::mousePressEvent(QMouseEvent *e) {
     QCursor c;
     if (e->button() == Qt::LeftButton) {
-        if (condition==0) {
+        if (condition == 0) {
             int index = findInVcp(this->pos.x(), this->pos.y());
             if (index >= 0) {
                 if (vcp[index]->isSelected) {
-                    vcp[index]->qpColor=Qt::black;
-                 //   selectedObjects.remove(findInSelected(vcp[index]->pos.x(), vcp[index]->pos.y()));
+                    vcp[index]->qpColor = Qt::black;
+                    //   selectedObjects.remove(findInSelected(vcp[index]->pos.x(), vcp[index]->pos.y()));
                 } else {
                     if (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier) {
                         qp *temp = vcp[index];
@@ -43,17 +43,18 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
         if (condition == 1) {
             if (!blocked) {
                 int y;
-                if (int i = findInVcp(this->pos.x(), this->pos.y())>=0) {
-                    if (vcp[i]->objType==LINE) {
-                        qp* line = vcp[i];
+                if (int i = findInVcp(this->pos.x(), this->pos.y()) >= 0) {
+                    if (vcp[i]->objType == LINE) {
+                        qp *line = vcp[i];
                         double renderX = canvasBegin.x() - this->pos.x();
                         double renderY;
-                        if (this->pos.y()>height()/2) {
+                        if (this->pos.y() > height() / 2) {
                             renderY = canvasBegin.y() + this->pos.y();
                         } else {
                             renderY = canvasBegin.y() - this->pos.y();
                         }
-                        controllerObservable->onCreatePointOn(new double(renderX), new double(renderY), nullptr, line->objectEntity->projectedEntity);
+                        controllerObservable->onCreatePointOn(new double(renderX), new double(renderY), nullptr,
+                                                              line->objectEntity->projectedEntity);
                     }
                 } else {
                     qp *qp1 = new qp;
@@ -80,17 +81,17 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
                 }
             } else {
                 if (xMatch.size() > 0) xMatch.pop_back();
-                qp* qp1 = new qp;
+                qp *qp1 = new qp;
                 qp1->pos = this->pos;
                 qp1->objType = POINT;
                 qp1->qpColor = Qt::black;
                 qp1->needsProjection = false;
-                vcp.back()->needsProjection=false;
+                vcp.back()->needsProjection = false;
                 vcp.back()->qpColor = Qt::black;
                 qp1->qpName = vcp.back()->qpName;
                 int y, z;
                 if (yBlocked == 1) qp1->planeNumber = 2; else qp1->planeNumber = 1;
-                PTR <ProjectionPlane> plane;
+                PTR<ProjectionPlane> plane;
                 PTR<TwoDEntity> twoDPoint;
                 if (qp1->planeNumber == 2) {
                     y = vcp.back()->pos.y() - height() / 2;
@@ -105,12 +106,25 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
                 PTR<Entity> point(new PointByCoords(qp1->pos.x(), y, z));
                 vcp.back()->projections.append(qp1);
                 twoDPoint->projectedEntity = point;
-                qp1->objectEntity=twoDPoint;
+                qp1->objectEntity = twoDPoint;
                 qp1->objectEntity->projectedEntity = controllerObservable->onAddEntity(point);
                 qp1->objectEntity->projectedEntity->twoDProjections.insert(twoDPoint);
                 qp1->objectEntity->projectedEntity->twoDProjections.insert(vcp.back()->objectEntity);
                 vcp.back()->objectEntity->projectedEntity = qp1->objectEntity->projectedEntity;
+                projectStructureList->addObjectToStructure(qp1->qpName, "Точка");
+                int sx = canvasBegin.x()-qp1->pos.x();
+                int sy;
+                int sz;
+                if (qp1->planeNumber == 1) {
+                    sy = canvasBegin.y() - qp1->pos.y();
+                    sz = vcp.back()->pos.y() - canvasBegin.y() ;
+                }
+                else {
+                    sy = canvasBegin.y() - vcp.back()->pos.y();
+                    sz = qp1->pos.y() - canvasBegin.y();
+                }
                 vcp.append(qp1);
+                projectStructureList->addPointCoords(qp1->qpName,sx, abs(sy), abs(sz));
                 blocked = false;
             }
         }
@@ -118,7 +132,7 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
             if ((vcp.size() > 0) && (vcp.last()->needsProjection == true) && (blocked == true)) {
                 if (vcp.last()->endpos.x() > 0) {
                     if (xMatch.size() > 0) xMatch.pop_back();
-                    qp* qp1 = new qp;
+                    qp *qp1 = new qp;
                     qp1->pos = this->pos;
                     qp1->objType = LINE;
                     qp1->qpColor = Qt::red;
@@ -133,7 +147,7 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
                 } else {
                     if (xMatch.size() > 0) xMatch.pop_back();
                     if (help.size() > 0) help.pop_back();
-                    qp* qp1 = vcp.back();
+                    qp *qp1 = vcp.back();
                     vcp.pop_back();
                     vcp.back()->qpColor = Qt::black;
                     qp1->endpos = this->pos;
@@ -141,37 +155,43 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
                     if (yBlocked == 1) qp1->planeNumber = 2; else qp1->planeNumber = 1;
                     qp1->projections.append(vcp.back());
                     vcp.back()->projections.append(qp1);
-                    PTR <ProjectionPlane> plane;
+                    PTR<ProjectionPlane> plane;
                     std::tuple lineCoords = linePlaneCoordsToCanvasCoords(qp1);
                     std::tuple lineBegin = std::get<0>(lineCoords);
                     std::tuple lineEnd = std::get<1>(lineCoords);
-                    int lineBeginX = std::get<0>(lineBegin); int lineBeginY = std::get<1>(lineBegin); int lineBeginZ = std::get<2>(lineBegin);
-                    int lineEndX = std::get<0>(lineEnd); int lineEndY = std::get<1>(lineEnd); int lineEndZ = std::get<2>(lineEnd);
+                    int lineBeginX = std::get<0>(lineBegin);
+                    int lineBeginY = std::get<1>(lineBegin);
+                    int lineBeginZ = std::get<2>(lineBegin);
+                    int lineEndX = std::get<0>(lineEnd);
+                    int lineEndY = std::get<1>(lineEnd);
+                    int lineEndZ = std::get<2>(lineEnd);
                     PTR<TwoDPoint> twoDLineBegin;
                     PTR<TwoDPoint> twoDLineEnd;
-                    if (qp1->planeNumber==1) {
+                    if (qp1->planeNumber == 1) {
                         twoDLineBegin = std::make_shared<TwoDPoint>(lineBeginX, lineBeginY, plane);
                         twoDLineEnd = std::make_shared<TwoDPoint>(lineEndX, lineEndY, plane);
                     } else {
                         twoDLineBegin = std::make_shared<TwoDPoint>(lineBeginX, lineBeginZ, plane);
                         twoDLineEnd = std::make_shared<TwoDPoint>(lineBeginX, lineBeginZ, plane);
                     }
-                    PTR<TwoDEntity> twoDLine (new TwoDLine(twoDLineBegin, twoDLineEnd, plane));
-                    PTR<Point> lineBeginPoint (new PointByCoords(lineBeginX, lineBeginY, lineBeginZ));
-                    PTR<Point> lineEndPoint (new PointByCoords(lineEndX, lineEndY, lineEndZ));
-                    PTR<Entity> line (new LineByTwoPoints(lineBeginPoint, lineEndPoint));
+                    PTR<TwoDEntity> twoDLine(new TwoDLine(twoDLineBegin, twoDLineEnd, plane));
+                    PTR<Point> lineBeginPoint(new PointByCoords(lineBeginX, lineBeginY, lineBeginZ));
+                    PTR<Point> lineEndPoint(new PointByCoords(lineEndX, lineEndY, lineEndZ));
+                    PTR<Entity> line(new LineByTwoPoints(lineBeginPoint, lineEndPoint));
                     twoDLine->projectedEntity = line;
-                    qp1->objectEntity=twoDLine;
-                    vcp.back()->objectEntity->projectedEntity=line;
+                    qp1->objectEntity = twoDLine;
+                    vcp.back()->objectEntity->projectedEntity = line;
                     controllerObservable->onAddEntity(line);
-                    vcp.back()->needsProjection=false;
+                    vcp.back()->needsProjection = false;
                     vcp.append(qp1);
                     qp1->needsProjection = false;
                     blocked = false;
+                    projectStructureList->addObjectToStructure(qp1->qpName, "Линия");
+                    projectStructureList->addLineCoords(qp1->qpName, lineBeginX, lineBeginY, lineBeginZ, lineEndX, lineEndY, lineEndZ);
                 }
             } else {
                 if (!blocked) {
-                    qp* qp1 = new qp;
+                    qp *qp1 = new qp;
                     qp1->pos = this->pos;
                     qp1->objType = LINE;
                     qp1->qpColor = Qt::red;
@@ -187,28 +207,28 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
                     yBlocked = qp1->planeNumber;
                 } else {
                     if (help.size() > 0) help.pop_back();
-                    qp* qp1 = vcp.back();
+                    qp *qp1 = vcp.back();
                     vcp.pop_back();
                     qp1->endpos = this->pos;
                     if (yBlocked == 1) qp1->planeNumber = 2; else qp1->planeNumber = 1;
                     qp1->needsProjection = true;
-                    PTR <ProjectionPlane> plane;
-                    int lineBeginX = canvasBegin.x()-qp1->pos.x();
-                    int lineEndX = canvasBegin.x()-qp1->endpos.x();
+                    PTR<ProjectionPlane> plane;
+                    int lineBeginX = canvasBegin.x() - qp1->pos.x();
+                    int lineEndX = canvasBegin.x() - qp1->endpos.x();
                     PTR<TwoDPoint> twoDLineBegin;
                     PTR<TwoDPoint> twoDLineEnd;
                     int lineBeginY, lineEndY;
-                    if (qp1->planeNumber==1) {
-                        lineBeginY = qp1->pos.y()-height()/2;
-                        lineEndY = qp1->endpos.y()-height()/2;
+                    if (qp1->planeNumber == 1) {
+                        lineBeginY = qp1->pos.y() - height() / 2;
+                        lineEndY = qp1->endpos.y() - height() / 2;
                     } else {
-                        lineBeginY =  height()/2 - qp1->pos.y();
-                        lineEndY =  height()/2 - qp1->endpos.y();
+                        lineBeginY = height() / 2 - qp1->pos.y();
+                        lineEndY = height() / 2 - qp1->endpos.y();
                     }
                     twoDLineBegin = std::make_shared<TwoDPoint>(lineBeginX, lineBeginY, plane);
                     twoDLineEnd = std::make_shared<TwoDPoint>(lineEndX, lineEndY, plane);
-                    PTR<TwoDEntity> twoDLine (new TwoDLine(twoDLineBegin, twoDLineEnd, plane));
-                    qp1->objectEntity=twoDLine;
+                    PTR<TwoDEntity> twoDLine(new TwoDLine(twoDLineBegin, twoDLineEnd, plane));
+                    qp1->objectEntity = twoDLine;
                     vcp.append(qp1);
                     xBlocked = qp1->pos.x();
                     yBlocked = qp1->planeNumber;
@@ -236,37 +256,46 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
             rRelated.exec();
             //обновить экран
             this->update();
-        } else if (condition==4) {
+        } else if (condition == 4) {
             int index = findInVcp(this->pos.x(), this->pos.y());
-            if (vcp[index]->objType==PLANEBYLINEANDPOINT) {
-                printf ("Clicked on plane");
-                qp* pointToWork = toWork[0];
-                qp* planeToWork = vcp[index];
-                std::tuple pointCoords = pointPlaneCoordsToCanvasCoords(pointToWork);
-                int pointX = std::get<0>(pointCoords); int pointY = std::get<1>(pointCoords); int pointZ = std::get<2>(pointCoords);
-                if (pointToWork->planeNumber==1) {
-                    toWork[0]->qpColor=Qt::black;
-                    toWork[0]->needsProjection=false;
-                    toWork[0]->connectedToPlane=true;
-                    toWork[0]->objectEntity->projectedEntity=controllerObservable->onLinkToPlane(new double (pointX), new double (pointY), nullptr, planeToWork->objectEntity->projectedEntity);
-                } else {
-                    toWork[0]->qpColor=Qt::black;
-                    toWork[0]->needsProjection=false;
-                    toWork[0]->connectedToPlane=true;
-                    toWork[0]->objectEntity->projectedEntity=controllerObservable->onLinkToPlane(new double (pointX), nullptr, new double (pointZ), planeToWork->objectEntity->projectedEntity);
-                }
-                toWork.erase(toWork.begin());
-                condition=0;
-            }
-        } else if (condition==5) {
-            int index = findInVcp(this->pos.x(), this->pos.y());
-            if (vcp[index]->objType==PLANEBYLINEANDPOINT) {
+            if (vcp[index]->objType == PLANEBYLINEANDPOINT) {
+                printf("Clicked on plane");
                 qp *pointToWork = toWork[0];
                 qp *planeToWork = vcp[index];
-                controllerObservable->onAddPointOnPlaneProjectionAlgo(planeToWork->objectEntity->projectedEntity, pointToWork->objectEntity->projectedEntity);
+                std::tuple pointCoords = pointPlaneCoordsToCanvasCoords(pointToWork);
+                int pointX = std::get<0>(pointCoords);
+                int pointY = std::get<1>(pointCoords);
+                int pointZ = std::get<2>(pointCoords);
+                if (pointToWork->planeNumber == 1) {
+                    toWork[0]->qpColor = Qt::black;
+                    toWork[0]->needsProjection = false;
+                    toWork[0]->connectedToPlane = true;
+                    toWork[0]->objectEntity->projectedEntity = controllerObservable->onLinkToPlane(new double(pointX),
+                                                                                                   new double(pointY),
+                                                                                                   nullptr,
+                                                                                                   planeToWork->objectEntity->projectedEntity);
+                } else {
+                    toWork[0]->qpColor = Qt::black;
+                    toWork[0]->needsProjection = false;
+                    toWork[0]->connectedToPlane = true;
+                    toWork[0]->objectEntity->projectedEntity = controllerObservable->onLinkToPlane(new double(pointX),
+                                                                                                   nullptr,
+                                                                                                   new double(pointZ),
+                                                                                                   planeToWork->objectEntity->projectedEntity);
+                }
+                toWork.erase(toWork.begin());
+                condition = 0;
+            }
+        } else if (condition == 5) {
+            int index = findInVcp(this->pos.x(), this->pos.y());
+            if (vcp[index]->objType == PLANEBYLINEANDPOINT) {
+                qp *pointToWork = toWork[0];
+                qp *planeToWork = vcp[index];
+                controllerObservable->onAddPointOnPlaneProjectionAlgo(planeToWork->objectEntity->projectedEntity,
+                                                                      pointToWork->objectEntity->projectedEntity);
             }
             toWork.erase(toWork.begin());
-            condition=0;
+            condition = 0;
         }
     }
 }

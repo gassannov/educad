@@ -82,6 +82,7 @@ class Canvas : public QWidget, public Renderable
 {
     Q_OBJECT
 public:
+    QVector <qp*> getVcp () {return vcp;}
     QVector <qp*> toWork;
     void deleteQp (qp* obj);
     void clear();
@@ -106,13 +107,15 @@ public:
     void addPlaneByLineAndPoint (int x, int y, int x1, int y1, int x2, int y2, int xBegin, int yBegin, int planeNumber, std::string name, TwoDEntity* twoDEntity);
     void addLinkLine(PTR<TwoDEntity> entity1, PTR<TwoDEntity> entity2) override;
     void selectByPlaneAndName(std::string name, int plane);
+    ProjectStructureList* projectStructureList;
+    QPoint canvasBegin;
 private:
+    QVector <qp> buildLine;
     qp* findInVcpByPTR (PTR<TwoDEntity> entity);
     ConnectedToPlaneContextEdit connectedPointRMB;
     UnprojectedPointContextEdit unprojectedPointRMB;
     PointAndLineContextEdit pointAndLineRMB;
     DontProjectObjectContextEdit oneProjectionRMB;
-    QPoint canvasBegin;
     TwoPointsContextEdit twoPointsRMB;
     int findInSelected (int x, int y);
     ControllerObservable* controllerObservable;
@@ -136,7 +139,6 @@ private:
     QPen pen;
     int xBlocked;
     int yBlocked;
-    ProjectStructureList* projectStructureList;
 signals:
 };
 

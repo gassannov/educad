@@ -90,28 +90,24 @@ ToolBar::ToolBar (QWidget *parent, Canvas* _canvas) {
     pointMethod->addItem("Точка по координатам");
     pointMethod->addItem("Отметить точку на чертеже");
     pointMethod->setCurrentIndex(-1);
+    cursorButton->setStyleSheet("background-color: rgb(224,238,249)");
     connect(pointMethod, &QComboBox::currentIndexChanged, this, &ToolBar::onPointIndexChanged);
-}
-
-void QPushButton::paintEvent(QPaintEvent *) {
-    QStylePainter p(this);
-    QStyleOptionButton option;
-    initStyleOption(&option);
-    option.state |= QStyle::State_MouseOver;
-    p.drawControl(QStyle::CE_PushButton, option);
 }
 
 void ToolBar::newProjectButtonHandler() {};
 void ToolBar::saveProjectButtonHandler() {};
 void ToolBar::openProjectButtonHander () {};
 void ToolBar::createPointButtonHandler () {
-    QPalette palette;
-    //palette.setColor(Qt::blue);
-    createPointButton->setPalette(palette);
+   createPointButton->setStyleSheet("background-color: rgb(224,238,249)");
+   createLineButton->setStyleSheet("background-color: rgb(255,255,255)");
+   cursorButton->setStyleSheet("background-color: rgb(255,255,255)");
     pointMethod->showPopup(createPointButton->x()+createPointButton->width(), createPointButton->height()+ QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight));
    printf ("\ncondition is set to %d\n", canvas->condition);
 };
 void ToolBar::createLineButtonHandler () {
+    createLineButton->setStyleSheet("background-color: rgb(224,238,249)");
+    createPointButton->setStyleSheet("background-color: rgb(255,255,255)");
+    cursorButton->setStyleSheet("background-color: rgb(255,255,255)");
     lineMethod->showPopup(createLineButton->x()+createLineButton->width(), createLineButton->height()+ QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight));
     canvas->condition = 2;
     printf ("\ncondition is set to %d\n", canvas->condition);
@@ -123,6 +119,9 @@ void ToolBar::eraseButtonHandler() {
 };
 
 void ToolBar::cursorButtonHandler() {
+    cursorButton->setStyleSheet("background-color: rgb(135,206,250)");
+    createLineButton->setStyleSheet("background-color: rgb(255,255,255)");
+    createPointButton->setStyleSheet("background-color: rgb(255,255,255)");
     canvas->condition=0;
 }
 

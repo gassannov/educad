@@ -66,7 +66,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event) {
             }
         }
         if ((condition == 2) && (vcp.last()->endpos.x() < 0)) {
-            if (help.size() > 0) help.pop_back();
+            if (buildLine.size() > 0) buildLine.pop_back();
             qp qp1;
             qp1.pos = vcp.last()->pos;
             qp1.objType = LINE;
@@ -74,9 +74,9 @@ void Canvas::mouseMoveEvent(QMouseEvent *event) {
             qp1.planeNumber = 0;
             qp1.endpos = this->pos;
             qp1.needsProjection = false;
-            help.append(qp1);
+            buildLine.append(qp1);
             this->update();
-        }
+           }
         if (xBlocked > 0) {
             if (xMatch.size() > 0) xMatch.pop_back();
             qp qp1;

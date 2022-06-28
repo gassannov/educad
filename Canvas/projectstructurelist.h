@@ -15,7 +15,9 @@ private:
     QTreeWidget* treeWidget;
     QTreeWidgetItem* planeXYStruct;
     QTreeWidgetItem* planeXZStruct;
+    QTreeWidgetItem* objectsStruct;
     vector <QTreeWidgetItem*> userPlanesStruct;
+    vector <QTreeWidgetItem*> objects;
     QFont font;
 private:
     PointContextEdit pointRMB;
@@ -25,6 +27,10 @@ public:
     void clear ();
     ProjectStructureList();
     int addNewPlaneToStructure();
+    void addObjectToStructure (QString objName, std::string objType);
+    void addPointCoords (QString pointName, int x, int y, int z);
+    void addLineCoords (QString lineName, int x1, int y1, int z1, int x2, int y2, int z2);
+    void addObjectDependency (std::string objType,QString objName, QString dependency);
     int addPointToXYPlaneStructure (QString pointName);
     int addPointToXZPlaneStructure (QString pointName);
     int addPlaneToXYPlaneStructure (QString planeName);
