@@ -44,3 +44,18 @@ void CoordinateInputDialog::checkInput() {
         okBtn->setDisabled(true);
 
     }
+
+void CoordinateInputDialog::execWithoutName(int x, int y, int z) {
+    layout()->removeWidget(text);
+    std::string yVal; std::string zVal;
+    xEdit->setText(QString::fromStdString(std::to_string(x)));
+    if (y==-1) yVal=" "; else yVal=std::to_string(abs(y));
+    if (z==-1) zVal=" "; else zVal=std::to_string(abs(z));
+    yEdit->setText(QString::fromStdString(yVal));
+    zEdit->setText(QString::fromStdString(zVal));
+    this->exec();
+}
+
+std::tuple<int, int, int> CoordinateInputDialog::getCoords() const {
+    return std::tuple<int, int, int>(xEdit->text().toInt(), yEdit->text().toInt(), zEdit->text().toInt());
+}

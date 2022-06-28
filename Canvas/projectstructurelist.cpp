@@ -7,6 +7,7 @@
 #include "iostream"
 //#include "QDesktopWidget"
 #include "QFont"
+#include "QFontDatabase"
 using namespace std;
 
 ProjectStructureList::ProjectStructureList() {
@@ -14,9 +15,10 @@ ProjectStructureList::ProjectStructureList() {
     int height = rec.height()*9/10;
     int width = rec.width();
     structureWidget = new QFrame ();
-    font = QFont("Times", 16);
+    int id = QFontDatabase::addApplicationFont("../Fonts/gosttypeb.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont font(family);
     treeWidget = new QTreeWidget (structureWidget);
-    treeWidget->setFont(font);
     treeWidget->setHeaderLabel("Структура проекта");
     setColumnCount(1);
     kingItem = new QTreeWidgetItem();

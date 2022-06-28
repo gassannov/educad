@@ -5,10 +5,15 @@
 #include "canvas.h"
 #include "Controller/controller.h"
 #include "Algo.h"
+#include "QFontDatabase"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    int id = QFontDatabase::addApplicationFont("../Fonts/gosttypeb.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont gost(family);
+    a.setFont(gost);
     a.setWindowIcon(QIcon("../Icons/rk1.png"));
     PTR<GUIAPI> gui(new GUIAPI());
     auto* render = new Render(gui);

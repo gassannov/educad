@@ -119,7 +119,7 @@ void ToolBar::eraseButtonHandler() {
 };
 
 void ToolBar::cursorButtonHandler() {
-    cursorButton->setStyleSheet("background-color: rgb(135,206,250)");
+    cursorButton->setStyleSheet("background-color: rgb(224,238,249)");
     createLineButton->setStyleSheet("background-color: rgb(255,255,255)");
     createPointButton->setStyleSheet("background-color: rgb(255,255,255)");
     canvas->condition=0;

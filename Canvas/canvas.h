@@ -76,6 +76,7 @@ struct qp //структура для хранения координаты пр
     bool isSelected=false;
     bool connectedToPlane = false;
     QVector<qp*> projections;
+    int realX; int realY; int realZ;
 };
 
 class Canvas : public QWidget, public Renderable

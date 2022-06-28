@@ -134,6 +134,8 @@ PointContextEdit::PointContextEdit () {
     contextEditWidget->addAction("Посчитать дистанцию");
     contextEditWidget->addAction("Изменить размер");
     QAction* deleteAction = new QAction(tr("Удалить"), this);
+    QAction* editCoordsAction = new QAction(tr("Редактировать координаты"), this);
+    contextEditWidget->addAction(editCoordsAction);
     contextEditWidget->addAction(deleteAction);
     contextEditWidget->addAction("Вырезать");
     contextEditWidget->addAction("Скопировать");
@@ -143,6 +145,7 @@ PointContextEdit::PointContextEdit () {
 //    connect(&getDistanceButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleGetDistanceButton()));
 //    connect(&resizeButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleResizeButton()));
       connect(deleteAction, SIGNAL (triggered()), this, SLOT (handleDeleteButton()));
+      connect(editCoordsAction, SIGNAL (triggered()), this, SLOT (handleEditCoordsButton()));
 //    connect(&cutButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleCutButton()));
 //    connect(&copyButton, SIGNAL (released()), this, SLOT (PointContextEdit::handleCopyButton()));
 }
@@ -272,6 +275,23 @@ void PointContextEdit::handeCutButton() {
 
 void PointContextEdit::handleCopyButton () {
 
+}
+
+void PointContextEdit::handleEditCoordsButton() {
+    Canvas* cnv = dynamic_cast<Canvas*>(parent());
+    auto obj = cnv->getSelectedObject();
+    CoordinateInputDialog dlg;
+    dlg.execWithoutName(obj->realX, obj->realY, obj->realZ);
+    auto result = dlg.getCoords();
+    obj->pos.setX(cnv->canvasBegin.x() - get<0>(result));
+    obj->projections[0]->pos.setX(obj->pos.x());
+    if (obj->planeNumber==1) {
+        obj->pos.setY(cnv->canvasBegin.y()+get<1>(result));
+        obj->projections[0]->pos.setY(cnv->canvasBegin.y()-get<2>(result));
+    } else if (obj->planeNumber==2) {
+        obj->projections[0]->pos.setY(cnv->canvasBegin.y()+get<1>(result));
+        obj->pos.setY(cnv->canvasBegin.y()-get<2>(result));
+    }
 }
 
 void DontProjectObjectContextEdit::handleDontProjectButon() {

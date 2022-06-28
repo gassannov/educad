@@ -123,6 +123,12 @@ void Canvas::mousePressEvent(QMouseEvent *e) {
                     sy = canvasBegin.y() - vcp.back()->pos.y();
                     sz = qp1->pos.y() - canvasBegin.y();
                 }
+                qp1->realX=sx;
+                qp1->realY=sy;
+                qp1->realZ=sz;
+                vcp.back()->realX=sx;
+                vcp.back()->realY=sy;
+                vcp.back()->realZ=sz;
                 vcp.append(qp1);
                 projectStructureList->addPointCoords(qp1->qpName,sx, abs(sy), abs(sz));
                 blocked = false;

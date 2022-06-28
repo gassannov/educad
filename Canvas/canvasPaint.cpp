@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include "QFontDatabase"
 
 void Canvas::paintEvent(QPaintEvent *event) {
     QBrush brush;
@@ -15,12 +16,24 @@ void Canvas::paintEvent(QPaintEvent *event) {
     p.drawLine(xAxisX1, xAxisY1, xAxisX2, xAxisY2);
     p.drawLine(xAxisX2, xAxisY2, xAxisX2 + 5, xAxisY2 - 5);
     p.drawLine(xAxisX2, xAxisY2, xAxisX2 + 5, xAxisY2 + 5);
-    QFont font("Times", 16);
+    int id = QFontDatabase::addApplicationFont("../Fonts/gosttypeb.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont font(family);
     p.setFont(font);
     p.drawText(QPoint(xAxisX2 + 10, xAxisY2 - 10), "X");
     QString posX = QString::number(pos.x());
     QString posY = QString::number(pos.y());
-    p.drawText(this->size().width() * 88 / 100, this->size().height() * 95 / 100, "X: " + posX + " Y: " + posY);
+    QString posZ;
+    p.drawText(this->size().width() * 80 / 100, this->size().height() * 95 / 100, "Canvas: X: " + posX + " Y: " + posY);
+    posX = QString::number(canvasBegin.x()-pos.x());
+    if (pos.y()>canvasBegin.y()) {
+        posY=QString::number(pos.y()-canvasBegin.y());
+        posZ="-";
+    } else {
+        posY="-";
+        posZ=QString::number(canvasBegin.y()-pos.y());
+    }
+    p.drawText(this->size().width() * 65 / 100, this->size().height() * 95 / 100, "Чертёж: X: " + posX + " Y: " + posY + " Z: " + posZ);
     int yzAxisX1 = width() - 10;
     int yzAxisY1 = 10;
     int yzAxisX2 = width() - 10;

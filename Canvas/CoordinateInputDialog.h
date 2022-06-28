@@ -15,8 +15,10 @@ class CoordinateInputDialog : public QDialog {
 Q_OBJECT
 public:
     CoordinateInputDialog( QWidget* parent = nullptr);
+    void execWithoutName (int x, int y, int z);
     ~CoordinateInputDialog() {}
     std::tuple<int,int,int,std::string> getInput() const;
+    std::tuple<int,int,int> getCoords () const;
 signals:
     void applied();
 private:

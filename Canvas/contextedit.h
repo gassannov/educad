@@ -3,6 +3,7 @@
 
 #include <QPushButton>
 #include <QTextEdit>
+#include "CoordinateInputDialog.h"
 
 class ConnectedToPlaneContextEdit : public QTextEdit {
 Q_OBJECT;
@@ -114,6 +115,7 @@ public:
     PointContextEdit();
     virtual ~PointContextEdit () {}
 private slots:
+    void handleEditCoordsButton();
     void handleProjectOnPlaneButton () ;
     void handleDrawPerpendicularButton () ;
     void handleRenameButton () ;
