@@ -3,23 +3,23 @@
 //
 #include "../include/Entity.h"
 
-void TwoDPlane::render() {
+void TwoDPlane::render(std::string name) {
     if (point1 && point2){
-        point1->render();
-        point2->render();
-        point3->render();
+        point1->render("uzbek");
+        point2->render("uzbek");
+        point3->render("uzbek");
     }
     else if(line1 && point1){
         int direction;
         if (projectionPlane->ordinat->point2->y == 1)
             direction = 1;
         else if (projectionPlane->ordinat->point2->z == 1) direction = 2;
-        renderable->addPlaneByLineAndPoint(this->point1->X, this->point1->Y, this->line1->point1->X, this->line1->point1->Y, this->line1->point2->X, this->line1->point2->Y,projectionPlane->originPoint->x, projectionPlane->originPoint->y, direction, "PL",
+        renderable->addPlaneByLineAndPoint(this->point1->X, this->point1->Y, this->line1->point1->X, this->line1->point1->Y, this->line1->point2->X, this->line1->point2->Y,projectionPlane->originPoint->x, projectionPlane->originPoint->y, direction, name,
                                            this);
     }
     else{
-        line1->render();
-        line2->render();
+        line1->render("uzbek");
+        line2->render("uzbek");
     }
 }
 

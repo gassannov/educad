@@ -8,7 +8,7 @@
 class GUIAPI : public GUIObserver {
 public:
     PTR<Canvas> canvas;
-    void onAddToProjectionPlane(std::shared_ptr<TwoDEntity> object) override;
+    void onAddToProjectionPlane(std::shared_ptr<TwoDEntity> object, std::string) override;
     void onChangeFromProjectionPlane(std::shared_ptr<TwoDEntity> object) override;
     void onDeleteFromProjectionPlane(std::shared_ptr<TwoDEntity> object) override;
     void onAddAlgorithm(std::vector<std::pair<std::string, std::vector<PTR<TwoDEntity>>>> algorithm) override;

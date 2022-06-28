@@ -1,7 +1,7 @@
 #include "AngemModelWorker.hpp"
 
 PTR<Entity> AngemModelWorker::AddToModel(PTR<Entity> p){
-    render->addEntity(p);
+    render->addEntity(p, "uzbek");
     container->insert(p);
 }
 

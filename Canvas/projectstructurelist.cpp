@@ -227,7 +227,7 @@ void ProjectStructureList::addLineCoords(QString lineName, int x1, int y1, int z
 void ProjectStructureList::addObjectDependency(std::string objType, QString lineName, QString dependency) {
     QTreeWidgetItem* curr;
     for (auto obj: objects) {
-        if (obj->text(0)=="Линия " + lineName) {
+        if (obj->text(0)==(QString::fromStdString(objType) + lineName)) {
             curr=obj;
             break;
         }

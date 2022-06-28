@@ -76,6 +76,9 @@ void TwoPointsContextEdit::handleLineByTwoPointsButton() {
 
 void PointAndLineContextEdit::handleParallelLineThroughPointButton () {
     Canvas* cnv = dynamic_cast<Canvas*>(parent());
+    InputName inputName;
+    inputName.exec();
+    QString name = inputName.getInput();
     QVector <qp*> objectsToWork = cnv->getSelectedObjects();
     //QVector <qp*> selectedObjects = cnv->getSelectedObjects();
     if (objectsToWork[0]->objType==LINE) {
@@ -93,8 +96,8 @@ void PointAndLineContextEdit::handleParallelLineThroughPointButton () {
     PTR<Point> baseLineEnd (new PointByCoords (lineEndX, lineEndY, lineEndZ));
     PTR<Entity> baseLine (new LineByTwoPoints(baseLineBegin, baseLineEnd));
     printf ("\n uzbek8=%d tadjik2=%d\n", objectsToWork[0]->objType, objectsToWork[1]->objType);
-    cnv->getControllerObservable()->onCreateParallelLine(baseLine, point);
-    cnv->projectStructureList->addObjectDependency("line", objectsToWork[1]->qpName, "Параллельна прямой P");
+    cnv->getControllerObservable()->onCreateParallelLine(baseLine, point, name.toStdString());
+    cnv->projectStructureList->addObjectDependency("line", objectsToWork[1]->qpName, "Параллельна прямой " + name);
 }
 
 LineContextEdit::LineContextEdit() {
@@ -130,7 +133,7 @@ PointContextEdit::PointContextEdit () {
     contextEditWidget->addAction("Переименовать");
     contextEditWidget->addAction("Посчитать дистанцию");
     contextEditWidget->addAction("Изменить размер");
-    QAction* deleteAction = new QAction(tr("хуй"), this);
+    QAction* deleteAction = new QAction(tr("Удалить"), this);
     contextEditWidget->addAction(deleteAction);
     contextEditWidget->addAction("Вырезать");
     contextEditWidget->addAction("Скопировать");
@@ -178,6 +181,9 @@ PointAndLineContextEdit::PointAndLineContextEdit () {
 
 void PointAndLineContextEdit::handlePerpendicularFromPointToLineButton() {
     Canvas* cnv = dynamic_cast<Canvas*>(parent());
+    InputName inputName;
+    inputName.exec();
+    QString name = inputName.getInput();
     QVector <qp*> objectsToWork = cnv->getSelectedObjects();
     //QVector <qp*> selectedObjects = cnv->getSelectedObjects();
     if (objectsToWork[0]->objType==LINE) {
@@ -194,16 +200,20 @@ void PointAndLineContextEdit::handlePerpendicularFromPointToLineButton() {
     PTR<Point> baseLineBegin (new PointByCoords (lineBeginX, lineBeginY, lineBeginZ));
     PTR<Point> baseLineEnd (new PointByCoords (lineEndX, lineEndY, lineEndZ));
     PTR<Entity> baseLine (new LineByTwoPoints(baseLineBegin, baseLineEnd));
-    cnv->getControllerObservable()->onCreatePerpendicular(point, baseLine);
-    cnv->projectStructureList->addObjectDependency("line", objectsToWork[1]->qpName, "Перпендикулярна прямой P");
+    cnv->getControllerObservable()->onCreatePerpendicular(point, baseLine, name.toStdString());
+    cnv->projectStructureList->addObjectDependency("Линия ", objectsToWork[1]->qpName, "Перпендикулярна прямой " + name);
 }
 
 void PointAndLineContextEdit::handlePlaneThroughLineAndPointButton() {
     Canvas* cnv = dynamic_cast<Canvas*>(parent());
     QVector <qp*> objectsToWork = cnv->getSelectedObjects();
+    InputName inputName;
+    inputName.exec();
+    QString name = inputName.getInput();
     if (objectsToWork[0]->objType==LINE) {
         std::swap(objectsToWork[0], objectsToWork[1]);
     }
+    cnv->projectStructureList->addObjectToStructure("uzbek", "Плоскость");
     std::tuple pointCoords = cnv->pointPlaneCoordsToCanvasCoords(objectsToWork[0]);
     std::tuple lineCoords = cnv->linePlaneCoordsToCanvasCoords(objectsToWork[1]);
     std::tuple lineBegin = std::get<0>(lineCoords);
@@ -218,6 +228,7 @@ void PointAndLineContextEdit::handlePlaneThroughLineAndPointButton() {
     cnv->getControllerObservable()->onDeleteEntity(point);
     cnv->getControllerObservable()->onDeleteEntity(baseLine);
     cnv->getControllerObservable()->onCreatePlaneByLinePoint(baseLine, point);
+    cnv->projectStructureList->addObjectDependency("Плоскость ", "uzbek", "Проведена через прямую " + objectsToWork[1]->qpName + " и точку " + objectsToWork[0]->qpName);
 }
 
 void PointAndLineContextEdit::handleMakeStraightLine() {

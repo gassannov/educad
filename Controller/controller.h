@@ -14,7 +14,7 @@ class Controller: public ControllerObservable{
 private:
 //    AngemModelWorker* worker;
     void addToModel(PTR<Entity> entity);
-    void renderEntity(PTR<Entity> entity);
+    void renderEntity(PTR<Entity> entity, std::string name);
     void disRenderEntity(PTR<Entity> entity);
     void disRenderIterative(PTR<Entity> entity);
     void renderIterative(PTR<Entity> entity);
@@ -28,8 +28,8 @@ public:
 
     void onChangeEntity(PTR<Entity> entity) override;
     bool onCreateLineByTwoPoint(PTR<Entity> point1, PTR<Entity> point2) override;
-    bool onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line) override;
-    bool onCreateParallelLine(PTR<Entity> line, PTR<Entity> point) override;
+    bool onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line, std::string ) override;
+    bool onCreateParallelLine(PTR<Entity> line, PTR<Entity> point, std::string) override;
     PTR<Entity> onAddEntity(PTR<Entity> entity) override;
     void onDeleteEntity(PTR<Entity> entity) override;
     bool onCreatePointOn(double* x, double * y, double * z, PTR<Entity> line) override;

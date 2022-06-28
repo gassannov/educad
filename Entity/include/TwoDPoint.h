@@ -11,7 +11,7 @@ public:
     double X;
     double Y;
     TwoDPoint(double x, double y, PTR<ProjectionPlane> plane);
-    void render();
+    void render(std::string);
     void deleteFromRender();
 
     PTR<Entity> entityByTwoDEntity(PTR<TwoDEntity> secondProjection) override;

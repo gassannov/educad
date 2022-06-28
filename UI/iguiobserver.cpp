@@ -4,19 +4,19 @@
 #include "hintWindow.h"
 //#include "TwoDEntity/TwoDEntity.h"
 
-void GUIAPI::onAddToProjectionPlane(std::shared_ptr<TwoDEntity> object) {
+void GUIAPI::onAddToProjectionPlane(std::shared_ptr<TwoDEntity> object, std::string objName) {
     object->setRenderable(canvas);
-    object->render();
+    object->render(objName);
 }
 
 void GUIAPI::onChangeFromProjectionPlane(std::shared_ptr<TwoDEntity> object) {
     object->setRenderable(canvas);
-    object->render();
+    object->render("uzbek");
 }
 
 void GUIAPI::onDeleteFromProjectionPlane(std::shared_ptr<TwoDEntity> object) {
     object->setRenderable(canvas);
-    object->render();
+    object->render("uzbek");
 }
 
 void GUIAPI::onAddAlgorithm(std::vector<std::pair<std::string, std::vector<PTR<TwoDEntity>>>> algorithm) {
@@ -30,7 +30,7 @@ void GUIAPI::onAddAlgorithm(std::vector<std::pair<std::string, std::vector<PTR<T
         } else {
             for (auto & i : step.second) {
                 i->setRenderable(canvas);
-                i->render();
+                i->render("");
             }
             if ((algorithm.size() >= iterator + 1) && (algorithm[iterator + 1].first == "link")) {
                 printf ("\nmaking connection\n");

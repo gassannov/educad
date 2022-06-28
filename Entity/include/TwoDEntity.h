@@ -11,7 +11,7 @@ public:
     PTR<Renderable> renderable;
     PTR<ProjectionPlane> projectionPlane;
     PTR<Entity> projectedEntity;
-    virtual void render() = 0;
+    virtual void render(std::string) = 0;
     virtual void deleteFromRender() = 0;
     void setRenderable(PTR<Renderable> renderable_);
     virtual void setProjected(PTR<Entity> projected){projectedEntity = projected;}

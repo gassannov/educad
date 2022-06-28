@@ -4,13 +4,13 @@
 #include "iostream"
 #include "../include/Entity.h"
 
-void TwoDLine::render() {
+void TwoDLine::render(std::string name) {
     int direction;
     if (projectionPlane->ordinat->point2->y == 1)
         direction = 1;
     else if (projectionPlane->ordinat->point2->z == 1) direction = 2;
     this->renderable->addLine(this->point1->X, this->point1->Y, this->point2->X, this->point2->Y,
-                              projectionPlane->originPoint->x, projectionPlane->originPoint->y, direction, "P");
+                              projectionPlane->originPoint->x, projectionPlane->originPoint->y, direction, name);
 }
 
 TwoDLine::TwoDLine(const std::shared_ptr<TwoDPoint> &point1, const std::shared_ptr<TwoDPoint> &point2,

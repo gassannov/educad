@@ -15,7 +15,7 @@ void Controller::onCreatePointByCoords(double x, double y, double z) {
     PTR<PointByCoords> pointByCoords = MAKEPTR<PointByCoords>(x, y, z);
     pointByCoords->addProjectionPlane(oxy);
     pointByCoords->addProjectionPlane(oxz);
-    renderEntity(pointByCoords);
+    renderEntity(pointByCoords, "uzbek");
 }
 
 PTR<Entity> Controller::onAddEntity(PTR<Entity> entity) {
@@ -29,12 +29,12 @@ void Controller::onDeleteEntity(PTR<Entity> entity) {
     disRenderIterative(entity);
 }
 
-void Controller::renderEntity(PTR<Entity> entity) {
-    render->addEntity(entity);
+void Controller::renderEntity(PTR<Entity> entity, std::string name) {
+    render->addEntity(entity, name);
 }
 
 void Controller::renderIterative(PTR<Entity> entity) {
-    renderEntity(entity);
+    renderEntity(entity, "uzbek");
     for (auto child: entity->childrends) {
         renderIterative(child);
     }
@@ -58,7 +58,7 @@ void Controller::updateIterative(PTR<Entity> entity) {
     }
 }
 
-bool Controller::onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line) {
+bool Controller::onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line, std::string perpName) {
     if (point->type() == "point" && line->type() == "line"){
         PTR<Point> pointCast = std::dynamic_pointer_cast<Point>(point);
         PTR<Line> lineCast = std::dynamic_pointer_cast<Line>(line);
@@ -66,13 +66,13 @@ bool Controller::onCreatePerpendicular(PTR<Entity> point, PTR<Entity> line) {
         perpendicularLine->addProjectionPlane(oxy);
         perpendicularLine->addProjectionPlane(oxz);
         addToModel(perpendicularLine);
-        renderEntity(perpendicularLine);
+        renderEntity(perpendicularLine, perpName);
         return true;
     }
     return false;
 }
 
-bool Controller::onCreateParallelLine(PTR<Entity> line, PTR<Entity> point) {
+bool Controller::onCreateParallelLine(PTR<Entity> line, PTR<Entity> point, std::string parName) {
     if (line->type() == "line" && point->type() == "point"){
         PTR<Line> lineCast = std::dynamic_pointer_cast<Line>(line);
         PTR<Point> pointCast = std::dynamic_pointer_cast<Point>(point);
@@ -80,7 +80,7 @@ bool Controller::onCreateParallelLine(PTR<Entity> line, PTR<Entity> point) {
         parallelLine->addProjectionPlane(oxy);
         parallelLine->addProjectionPlane(oxz);
         addToModel(parallelLine);
-        renderEntity(parallelLine);
+        renderEntity(parallelLine, parName);
     }
 }
 
@@ -92,7 +92,7 @@ bool Controller::onCreateLineByTwoPoint(PTR<Entity> point1, PTR<Entity> point2) 
         lineByTwoPoints->addProjectionPlane(oxy);
         lineByTwoPoints->addProjectionPlane(oxz);
         addToModel(lineByTwoPoints);
-        renderEntity(lineByTwoPoints);
+        renderEntity(lineByTwoPoints, "uzbek");
         return true;
     }
     return false;
@@ -105,7 +105,7 @@ bool Controller::onCreatePointOn(double* x, double* y, double* z, PTR<Entity> en
         pointOnLine->addProjectionPlane(oxy);
         pointOnLine->addProjectionPlane(oxz);
         addToModel(pointOnLine);
-        renderEntity(pointOnLine);
+        renderEntity(pointOnLine, "uzbek");
         return true;
     }
 
@@ -115,7 +115,7 @@ bool Controller::onCreatePointOn(double* x, double* y, double* z, PTR<Entity> en
         pointOnPlane->addProjectionPlane(oxy);
         pointOnPlane->addProjectionPlane(oxz);
         addToModel(pointOnPlane);
-        renderEntity(pointOnPlane);
+        renderEntity(pointOnPlane, "uzbek");
         return true;
     }
     return false;
@@ -128,7 +128,7 @@ bool Controller::onCreatePlaneByThreePoints(PTR<Entity> point1, PTR<Entity> poin
         PTR<Point> point3Cast = std::dynamic_pointer_cast<Point>(point3);
         PTR<Plane> planeByThreePoints(new PlaneByThreePoints(point1Cast, point2Cast, point3Cast));
         addToModel(planeByThreePoints);
-        renderEntity(planeByThreePoints);
+        renderEntity(planeByThreePoints, "uzbek");
     }
     return false;
 }
@@ -139,7 +139,7 @@ bool Controller::onCreatePlaneByParallels(PTR<Entity> line1, PTR<Entity> line2) 
         PTR<Line> line2Cast = std::dynamic_pointer_cast<Line>(line2);
         PTR<Plane> plane(new PlaneByParallelLines(line1Cast, line2Cast));
         addToModel(plane);
-        renderEntity(plane);
+        renderEntity(plane, "uzbek");
     }
     return false;
 }
@@ -150,7 +150,7 @@ bool Controller::onCreatePlaneByIntersecting(PTR<Entity> line1, PTR<Entity> line
         PTR<Line> line2Cast = std::dynamic_pointer_cast<Line>(line2);
         PTR<Plane> plane(new PlaneByIntersectingLines(line1Cast, line2Cast));
         addToModel(plane);
-        renderEntity(plane);
+        renderEntity(plane, "uzbek");
     }
     return false;
 }
@@ -163,7 +163,7 @@ bool Controller::onCreatePlaneByLinePoint(PTR<Entity> line, PTR<Entity> point) {
         plane->addProjectionPlane(oxy);
         plane->addProjectionPlane(oxz);
         addToModel(plane);
-        renderEntity(plane);
+        renderEntity(plane, "uzbek");
     }
     return false;
 }

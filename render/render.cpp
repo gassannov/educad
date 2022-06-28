@@ -8,7 +8,7 @@ void Render::addToProjectionPlane(const std::shared_ptr<ProjectionPlane>& plane,
     PTR<TwoDEntity> projectedEntity = object->getProjection(plane);
     plane->add(projectedEntity);
     object->addProjectionPlane(plane);
-    observer->onAddToProjectionPlane(projectedEntity);
+    observer->onAddToProjectionPlane(projectedEntity, "uzbek");
 }
 
 void Render::deleteFromPlane(const std::shared_ptr<ProjectionPlane>& plane, std::shared_ptr<Entity> object) const {
@@ -36,13 +36,13 @@ void Render::deleteProjectionPlane(const PTR<ProjectionPlane>& projectionPlane) 
     planes.erase(projectionPlane);
 }
 
-void Render::addEntity(const PTR<Entity>& entity) {
+void Render::addEntity(const PTR<Entity>& entity, std::string name) {
     for(const auto& it:entity->projections){
         PTR<TwoDEntity> projectedEntity = entity->getProjection(it);
         it->add(projectedEntity);
         projectedEntity->setProjected(it);
         projectedEntity->projectedEntity = entity;
-        observer->onAddToProjectionPlane(projectedEntity);
+        observer->onAddToProjectionPlane(projectedEntity, name);
         planes.insert(it);
     }
 }

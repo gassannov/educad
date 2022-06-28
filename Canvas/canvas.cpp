@@ -169,6 +169,7 @@ void Canvas::addLine(int x1, int y1, int x2, int y2, int xBegin, int yBegin, int
 InputName::InputName(QWidget *parent) : QDialog(parent) {
     QBoxLayout *layout = new QHBoxLayout;
     m_edit = new QLineEdit;
+    m_edit->setPlaceholderText("Имя объекта");
     layout->addWidget(m_edit);
     QPushButton *okBtn = new QPushButton("OK");
     connect(okBtn, SIGNAL(clicked()), SLOT(accept()));
